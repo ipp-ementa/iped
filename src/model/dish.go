@@ -10,11 +10,18 @@ type Dish struct {
 }
 
 // New initializes a Dish model using a dish type and a description
-// An error is returned if the dish description is empty
-func New(Type DishType, Description string) (Dish, error) {
+// A FieldError is returned either if the dish description is empty or the dish type isn't valid
+func New(Type int, Description string) (Dish, error) {
 
-	err := grantValidDescription(Description)
-	dish := Dish{Type, Description}
+	dish := Dish{DishType(Type), Description}
+
+	err := grantValidDishType(Type)
+
+	if err != nil {
+		return dish, err
+	}
+
+	err = grantValidDescription(Description)
 
 	return dish, err
 }
@@ -27,6 +34,19 @@ func grantValidDescription(description string) error {
 
 	if len(strings.TrimSpace(description)) == 0 {
 		err = &FieldError{"description", "dish"}
+	}
+
+	return err
+}
+
+// This function grants that a dish type is valid, and if not returns an error
+// See [DishType.Validate] for validation logic
+func grantValidDishType(dishtype int) error {
+
+	var err error
+
+	if !Validate(dishtype) {
+		err = &FieldError{"dishtype", "dish"}
 	}
 
 	return err
