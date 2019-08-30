@@ -7,7 +7,7 @@ import "fmt"
 type FieldError struct {
 	// this string should be the name of the field which is invalid
 	Field string
-	// and this string should be the name of the model which the error was created
+	// and this string should be the name of the model which holds the invalid field
 	Model string
 }
 
