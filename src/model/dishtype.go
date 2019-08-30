@@ -11,3 +11,8 @@ const (
 	Vegetarian
 	Diet
 )
+
+// Validate check if a given integer is a valid dish type
+func Validate(dishtype int) bool {
+	return dishtype >= 0 && dishtype <= 3
+}
