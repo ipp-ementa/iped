@@ -18,7 +18,7 @@ func TestUnexistingDishTypeFailsValidateFunction(t *testing.T) {
 
 func TestExistingDishTypeSucceedsValidateFunction(t *testing.T) {
 
-	// First test is for Meat dishtype
+	// First test is for Meat dish type
 
 	valid := Validate(0)
 
@@ -26,19 +26,23 @@ func TestExistingDishTypeSucceedsValidateFunction(t *testing.T) {
 		t.Error("Validate(0) failed but should have succeeded as 0 is the Meat DishType")
 	}
 
-	// Second test is for Fish dishtype
+	// Second test is for Fish dish type
 
 	valid = Validate(1)
 
 	if !valid {
-		t.Error("Validate(1) failed but should have succeeded as 1 is the Dish DishType")
+		t.Error("Validate(1) failed but should have succeeded as 1 is the Fish DishType")
 	}
+
+	// Third test is for Vegetarian dish type
 
 	valid = Validate(2)
 
 	if !valid {
 		t.Error("Validate(2) failed but should have succeeded as 2 is the Vegetarian DishType")
 	}
+
+	// Fourth test is for Diet dish type
 
 	valid = Validate(3)
 
