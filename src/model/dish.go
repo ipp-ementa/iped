@@ -23,7 +23,7 @@ func New(Type DishType, Description string) (Dish, error) {
 // A dish description is invalid if it is empty
 func grantValidDescription(description string) error {
 
-	var err *FieldError
+	var err error
 
 	if len(strings.TrimSpace(description)) == 0 {
 		err = &FieldError{"description", "dish"}
