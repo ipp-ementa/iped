@@ -73,3 +73,61 @@ func TestNotEmptyDishDescriptionDoesNotReturnError(t *testing.T) {
 		t.Errorf("Menu initilization should have been successful but got %s", err)
 	}
 }
+
+func TestDishesMethodReturnsUnmodifiableSlice(t *testing.T) {
+	_dish := dish.Dish{Type: 0, Description: "Fried Noodles"}
+
+	dishes := []dish.Dish{_dish}
+
+	menu, _ := New(0, dishes)
+
+	availableDishes := menu.Dishes()
+
+	// This verification is to grant that the returned available dishes slice length is 1
+
+	if lenab := len(availableDishes); lenab != 1 {
+		t.Errorf("The length of availableDishes slice should be 1 but got: %d", lenab)
+	}
+
+	// If we add a new dish to the the returned slice,
+	// it should not modify the slice pointed on the menu struct
+
+	availableDishes = append(availableDishes, _dish)
+
+	if lenam := len(availableDishes); lenam != 2 {
+		t.Errorf("The length of availableDishes slice should now be 2 but got: %d", lenam)
+	}
+
+	availableDishesAfterModification := menu.Dishes()
+
+	if lenaam := len(availableDishesAfterModification); lenaam != 1 {
+		t.Errorf("The length of availableDishesAfterModification slice should be 1 but got: %d", lenaam)
+	}
+}
+
+func TestDishesMethodReturnsDishesPassedOnInitialization(t *testing.T) {
+	_dish := dish.Dish{Type: 0, Description: "Fried Noodles"}
+
+	dishes := []dish.Dish{_dish}
+
+	menu, _ := New(0, dishes)
+
+	availableDishes := menu.Dishes()
+
+	if lena := len(availableDishes); lena != 1 {
+		t.Errorf("Available dishes slice length returned by Dishes method should be 1 but got: %d", lena)
+	}
+
+	equalDishType := _dish.Type == availableDishes[0].Type
+
+	if !equalDishType {
+		t.Errorf("Available dish type returned by Dishes method is not equal to the one passed on initialization")
+	}
+
+	equalDishDescription := _dish.Description == availableDishes[0].Description
+
+	if !equalDishDescription {
+		t.Errorf("Available dish description returned by Dishes method is not equal to the one passed on initialization")
+	}
+
+}
