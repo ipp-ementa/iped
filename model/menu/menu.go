@@ -9,7 +9,7 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Menu struct {
 	Type   MenuType
-	Dishes []dish.Dish
+	dishes []dish.Dish
 }
 
 // New initializes a Menu model using a menu type and a set of dishes
@@ -27,6 +27,13 @@ func New(Type int, Dishes []dish.Dish) (Menu, error) {
 	err = grantThatAtLeastOneDishWasProvided(Dishes)
 
 	return menu, err
+}
+
+// Dishes returns the available dishes on a menu as a slice
+// The returned slice has different reference of the one in Menu struct
+// In order to prevent modifications
+func (menu Menu) Dishes() []dish.Dish {
+	return menu.dishes
 }
 
 // This function grants that a menu type is valid, and if not returns an error
