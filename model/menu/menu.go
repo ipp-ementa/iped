@@ -42,26 +42,6 @@ func (menu Menu) Dishes() []dish.Dish {
 	return menu.dishes
 }
 
-// AddDish allows to add a new dish to the menu
-// If the dish being added is found to be duplicated an error is returned
-func (menu *Menu) AddDish(dish dish.Dish) error {
-
-	var err error
-
-	menuDishes := menu.Dishes()
-
-	menuDishes = append(menuDishes, dish)
-
-	err = grantThatDishesAreUnique(menuDishes)
-
-	if err == nil {
-		menu.dishes = menuDishes
-	}
-
-	return err
-
-}
-
 // This function grants that a menu type is valid, and if not returns an error
 // See [MenuType.Validate] for validation logic
 func grantValidMenuType(menutype int) error {
