@@ -1,8 +1,9 @@
 package dish
 
 import (
-	"github.com/ipp-ementa/iped/model/customerror"
 	"testing"
+
+	"github.com/ipp-ementa/iped/model/customerror"
 )
 
 func TestUnexistingDishTypeReturnError(t *testing.T) {
@@ -54,5 +55,53 @@ func TestNotEmptyDishDescriptionDoesNotReturnError(t *testing.T) {
 
 	if err != nil {
 		t.Errorf("Dish initilization should have been successful but got %s", err)
+	}
+}
+
+func TestDishesWithDifferentTypesAreNotEqual(t *testing.T) {
+	dishone, _ := New(0, "Fried Noodles")
+
+	dishtwo, _ := New(1, "Fried Noodles")
+
+	equality := dishone.Equals(dishtwo)
+
+	if equality {
+		t.Errorf("dishone has dish type: %d and dishtwo has dish type: %d, which are different but were proved to be equal", dishone.Type, dishtwo.Type)
+	}
+}
+
+func TestDishesWithDifferentDescriptionsAreNotEqual(t *testing.T) {
+	dishone, _ := New(0, "Fried Noodles")
+
+	dishtwo, _ := New(0, "Fries with beef")
+
+	equality := dishone.Equals(dishtwo)
+
+	if equality {
+		t.Errorf("dishone has description: %s and dishtwo has description: %s, which are different but were proved to be equal", dishone.Description, dishtwo.Description)
+	}
+}
+
+func TestDishesWithDifferentTypesAndDescriptionsAreNotEqual(t *testing.T) {
+	dishone, _ := New(0, "Fried Noodles")
+
+	dishtwo, _ := New(1, "Fries with beef")
+
+	equality := dishone.Equals(dishtwo)
+
+	if equality {
+		t.Error("dishone and dishtwo both have different dish types and descriptions but were proved to be equal")
+	}
+}
+
+func TestDishesWithEqualTypesAndDescriptionsAreEqual(t *testing.T) {
+	dishone, _ := New(0, "Fried Noodles")
+
+	dishtwo, _ := New(0, "Fried Noodles")
+
+	equality := dishone.Equals(dishtwo)
+
+	if !equality {
+		t.Errorf("dishone and dishtwo both have equal dish types and descriptions but were proved to be different")
 	}
 }
