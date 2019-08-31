@@ -30,6 +30,12 @@ func New(Type int, Description string) (Dish, error) {
 	return dish, err
 }
 
+// Equals compares equality between two dishes
+// A dish proves true equality to other dish if both dish types and description are equal
+func (dish Dish) Equals(comparingDish Dish) bool {
+	return dish.Type == comparingDish.Type && dish.Description == comparingDish.Description
+}
+
 // This function grants that a dish description is valid, and if not returns an error
 // A dish description is invalid if it is empty
 func grantValidDescription(description string) error {
