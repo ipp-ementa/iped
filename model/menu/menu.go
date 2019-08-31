@@ -13,7 +13,7 @@ type Menu struct {
 }
 
 // New initializes a Menu model using a menu type and a set of dishes
-// A FieldError is returned either if the menu type is invalid or no dishes were provided
+// A FieldError is returned either if the menu type is invalid, no dishes were provided or the dishes are not unique
 func New(Type int, Dishes []dish.Dish) (Menu, error) {
 
 	menu := Menu{MenuType(Type), Dishes}
@@ -25,6 +25,12 @@ func New(Type int, Dishes []dish.Dish) (Menu, error) {
 	}
 
 	err = grantThatAtLeastOneDishWasProvided(Dishes)
+
+	if err != nil {
+		return menu, err
+	}
+
+	err = grantThatDishesAreUnique(Dishes)
 
 	return menu, err
 }
@@ -49,13 +55,43 @@ func grantValidMenuType(menutype int) error {
 	return err
 }
 
-// This function grants that at least one dish is provided in given dish list
-// If the given dish list is nil or empty an error is returned
+// This function grants that at least one dish is provided in given dish slice
+// If the given dish slice is nil or empty an error is returned
 func grantThatAtLeastOneDishWasProvided(dishes []dish.Dish) error {
 
 	var err error
 
 	if dishes == nil || len(dishes) == 0 {
+		err = &customerror.FieldError{Field: "dishes", Model: "menu"}
+	}
+
+	return err
+}
+
+// This function grants that all dishes given in a slice are unique
+// If a dish proves equality to any other dish in the slice, an error is returned
+func grantThatDishesAreUnique(dishes []dish.Dish) error {
+
+	var err error
+
+	unique := true
+	dishesLength := len(dishes)
+	i := 0
+
+	for i < dishesLength {
+		j := i + 1
+		for j < dishesLength {
+			unique = !dishes[i].Equals(dishes[j])
+			j++
+			if !unique {
+				i = dishesLength
+				j = i
+			}
+		}
+		i++
+	}
+
+	if !unique {
 		err = &customerror.FieldError{Field: "dishes", Model: "menu"}
 	}
 
