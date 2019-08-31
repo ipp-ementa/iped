@@ -1,9 +1,13 @@
-package model
+package dish
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/ipp-ementa/iped/model/customerror"
+)
 
 // Dish is a model for what a person can choose to eat in canteen
-// A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture
+// A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Dish struct {
 	Type        DishType
 	Description string
@@ -33,7 +37,7 @@ func grantValidDescription(description string) error {
 	var err error
 
 	if len(strings.TrimSpace(description)) == 0 {
-		err = &FieldError{"description", "dish"}
+		err = &customerror.FieldError{Field: "description", Model: "dish"}
 	}
 
 	return err
@@ -46,7 +50,7 @@ func grantValidDishType(dishtype int) error {
 	var err error
 
 	if !Validate(dishtype) {
-		err = &FieldError{"dishtype", "dish"}
+		err = &customerror.FieldError{Field: "dishtype", Model: "dish"}
 	}
 
 	return err
