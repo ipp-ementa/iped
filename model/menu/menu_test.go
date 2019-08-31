@@ -62,7 +62,35 @@ func TestEmptyDishListReturnError(t *testing.T) {
 	}
 }
 
-func TestNotEmptyDishDescriptionDoesNotReturnError(t *testing.T) {
+func TestDishListWithEqualDishesReturnError(t *testing.T) {
+	_dish := dish.Dish{Type: 0, Description: "Fried Noodles"}
+
+	dishes := []dish.Dish{_dish, _dish}
+
+	_, err := New(0, dishes)
+
+	if err == nil {
+		t.Error("Menu initilization should have returned an error but got nil")
+	}
+
+	if err.(*customerror.FieldError).Field != "dishes" {
+		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field dishes")
+	}
+
+	_dish2 := dish.Dish{Type: 1, Description: "Fried Noodles"}
+
+	dishes = []dish.Dish{_dish, _dish2, _dish2}
+
+	if err == nil {
+		t.Error("Menu initilization should have returned an error but got nil")
+	}
+
+	if err.(*customerror.FieldError).Field != "dishes" {
+		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field dishes")
+	}
+}
+
+func TestExistingMenuTypeAndValidDishListDoesNotReturnError(t *testing.T) {
 	_dish := dish.Dish{Type: 0, Description: "Fried Noodles"}
 
 	dishes := []dish.Dish{_dish}
