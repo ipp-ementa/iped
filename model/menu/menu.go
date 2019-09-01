@@ -30,7 +30,7 @@ func New(Type int, Dishes []dish.Dish) (Menu, error) {
 		return menu, err
 	}
 
-	err = grantThatDishesAreUnique(Dishes)
+	err = grantNoDuplicatedDishesExist(Dishes)
 
 	return menu, err
 }
@@ -70,7 +70,7 @@ func grantThatAtLeastOneDishWasProvided(dishes []dish.Dish) error {
 
 // This function grants that all dishes given in a slice are unique
 // If a dish proves equality to any other dish in the slice, an error is returned
-func grantThatDishesAreUnique(dishes []dish.Dish) error {
+func grantNoDuplicatedDishesExist(dishes []dish.Dish) error {
 
 	var err error
 
