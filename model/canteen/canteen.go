@@ -13,7 +13,7 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Canteen struct {
 	Name  string
-	Menus map[time.Time][]menu.Menu
+	menus map[time.Time][]menu.Menu
 }
 
 // New initializes a Canteen model using its name
@@ -29,6 +29,25 @@ func New(Name string) (Canteen, error) {
 	}
 
 	return canteen, err
+}
+
+// AvailableMenus returns the menus which the canteen is providing at the time being asked
+// If no menus are available an empty slice is returned
+// The returned slice is unmodifiable in order to prevent modifications
+func (canteen Canteen) AvailableMenus() []menu.Menu {
+
+	todayDate := time.Now()
+
+	todayDate = time.Date(todayDate.Year(), todayDate.Month(), todayDate.Day(), int(0), int(0), int(0), int(0), todayDate.Location())
+
+	availableMenus, exists := canteen.menus[todayDate]
+
+	if !exists {
+		availableMenus = []menu.Menu{}
+	}
+
+	return availableMenus
+
 }
 
 // This function grants that a canteen name is not empty, and if empty returns an error
