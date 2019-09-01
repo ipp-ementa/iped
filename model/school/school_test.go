@@ -203,3 +203,59 @@ func TestCanteensMethodReturnsSliceWithDifferentReference(t *testing.T) {
 	}
 
 }
+
+func TestAddCanteenReturnsErrorOnDuplicatedCanteen(t *testing.T) {
+	_canteen, _ := canteen.New("Cantina do H")
+
+	_canteens := []canteen.Canteen{_canteen}
+
+	_school, _ := New("ISEP", "Instituto Superior de Engenharia do Porto", _canteens)
+
+	availableCanteens := _school.Canteens()
+
+	if lena := len(availableCanteens); lena != 1 {
+		t.Errorf("It should only exist 1 school canteen but got: %d", lena)
+	}
+
+	_duplicatedCanteen, _ := canteen.New("cantina do h")
+
+	err := _school.AddCanteen(_duplicatedCanteen)
+
+	if err == nil {
+		t.Errorf("The canteen with the name: %s was successfuly added but the school already provides a canteen with the name: %s", _duplicatedCanteen.Name, _canteen.Name)
+	}
+
+	availableCanteens = _school.Canteens()
+
+	if lena := len(availableCanteens); lena != 1 {
+		t.Errorf("The number of existing schools should still be 1 but got: %d", lena)
+	}
+}
+
+func TestAddCanteenDoesNotReturnErrorOnCanteenWithDifferentName(t *testing.T) {
+	_canteen, _ := canteen.New("Cantina do H")
+
+	_canteens := []canteen.Canteen{_canteen}
+
+	_school, _ := New("ISEP", "Instituto Superior de Engenharia do Porto", _canteens)
+
+	availableCanteens := _school.Canteens()
+
+	if lena := len(availableCanteens); lena != 1 {
+		t.Errorf("It should only exist 1 school canteen but got: %d", lena)
+	}
+
+	_differentNameCanteen, _ := canteen.New("cantina do f")
+
+	err := _school.AddCanteen(_differentNameCanteen)
+
+	if err != nil {
+		t.Errorf("_canteen name is: %s and _differentNameCanteen name is: %s, which are different but the error: %s was returned while adding _differentNameCanteen", _canteen.Name, _differentNameCanteen.Name, err)
+	}
+
+	availableCanteens = _school.Canteens()
+
+	if lena := len(availableCanteens); lena != 2 {
+		t.Errorf("The number of existing schools should now be 2 but got: %d", lena)
+	}
+}
