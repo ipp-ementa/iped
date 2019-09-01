@@ -2,6 +2,7 @@ package school
 
 import (
 	"strings"
+	"unicode"
 
 	"github.com/ipp-ementa/iped/model/canteen"
 	"github.com/ipp-ementa/iped/model/customerror"
@@ -74,7 +75,19 @@ func grantSchoolAcronymDoesNotHaveSpacesBetweenLetters(acronym string) error {
 
 	var err error
 
-	if len(acronym) != len(strings.TrimSpace(acronym)) {
+	acronymLength := len(acronym)
+
+	acronymLength--
+
+	for acronymLength >= 0 {
+		if unicode.IsSpace(rune(acronym[acronymLength])) {
+			acronymLength = -2
+		} else {
+			acronymLength--
+		}
+	}
+
+	if acronymLength == -2 {
 		err = &customerror.FieldError{Field: "acronym", Model: "school"}
 	}
 
