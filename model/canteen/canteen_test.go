@@ -62,6 +62,12 @@ func TestAvailableMenusMethodReturnsUnmodifiableSlice(t *testing.T) {
 		t.Errorf("The length of availableMenus slice should be 0 but got: %d", lenab)
 	}
 
+	// If the length of the slice is the same as the capacity the slice was successfuly copied from the original slice
+
+	if capb := cap(availableMenus); capb != 0 {
+		t.Errorf("The capacitiy of availableMenus should be the same as its length (0) but got %d", capb)
+	}
+
 	// If we add a new menu to the the returned slice,
 	// it should not modify the slice pointed on the canteen struct
 
@@ -80,6 +86,11 @@ func TestAvailableMenusMethodReturnsUnmodifiableSlice(t *testing.T) {
 	if lenaam := len(availableMenusAfterModification); lenaam != 0 {
 		t.Errorf("The length of availableMenusAfterModification slice should be 0 but got: %d", lenaam)
 	}
+
+	if capb := cap(availableMenusAfterModification); capb != 0 {
+		t.Errorf("The capacitiy of availableMenusAfterModification should be the same as its length (0) but got %d", capb)
+	}
+
 }
 
 func TestAddTodayMethodUpdatesAvailableMenus(t *testing.T) {

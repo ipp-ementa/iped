@@ -117,6 +117,12 @@ func TestDishesMethodReturnsUnmodifiableSlice(t *testing.T) {
 		t.Errorf("The length of availableDishes slice should be 1 but got: %d", lenab)
 	}
 
+	// If the length of the slice is the same as the capacity the slice was successfuly copied from the original slice
+
+	if capb := cap(availableDishes); capb != 1 {
+		t.Errorf("The capacitiy of availableDishes should be the same as its length (1) but got %d", capb)
+	}
+
 	// If we add a new dish to the the returned slice,
 	// it should not modify the slice pointed on the menu struct
 
@@ -130,6 +136,10 @@ func TestDishesMethodReturnsUnmodifiableSlice(t *testing.T) {
 
 	if lenaam := len(availableDishesAfterModification); lenaam != 1 {
 		t.Errorf("The length of availableDishesAfterModification slice should be 1 but got: %d", lenaam)
+	}
+
+	if capb := cap(availableDishesAfterModification); capb != 1 {
+		t.Errorf("The capacitiy of availableDishesAfterModification should be the same as its length (1) but got %d", capb)
 	}
 }
 
