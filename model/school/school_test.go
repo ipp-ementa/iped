@@ -159,3 +159,47 @@ func TestNotEmptyOrDuplicatedSchoolCanteensDoesNotReturnError(t *testing.T) {
 		t.Errorf("School initilization should have been successful but got %s", err)
 	}
 }
+
+func TestCanteensMethodReturnsSliceWithDifferentReference(t *testing.T) {
+	_canteen, _ := canteen.New("Cantina do H")
+
+	_canteens := []canteen.Canteen{_canteen}
+
+	_school, _ := New("ISEP", "Instituto Superior de Engenharia do Porto", _canteens)
+
+	availableCanteens := _school.Canteens()
+
+	// This verification is to grant that the returned available canteens slice length is 0
+
+	if lenab := len(availableCanteens); lenab != 1 {
+		t.Errorf("The length of availableCanteens slice should be 1 but got: %d", lenab)
+	}
+
+	// If the length of the slice is the same as the capacity the slice was successfuly copied from the original slice
+
+	if capb := cap(availableCanteens); capb != 1 {
+		t.Errorf("The capacitiy of availableCanteens should be the same as its length (1) but got %d", capb)
+	}
+
+	// If we add a new canteen to the the returned slice,
+	// it should not modify the slice pointed on the school struct
+
+	_differentCanteen, _ := canteen.New("Cantina do F")
+
+	availableCanteens = append(availableCanteens, _differentCanteen)
+
+	if lenam := len(availableCanteens); lenam != 2 {
+		t.Errorf("The length of availableCanteens slice should now be 2 but got: %d", lenam)
+	}
+
+	availableCanteensAfterModification := _school.Canteens()
+
+	if lenaam := len(availableCanteensAfterModification); lenaam != 1 {
+		t.Errorf("The length of availableCanteensAfterModification slice should be 1 but got: %d", lenaam)
+	}
+
+	if capb := cap(availableCanteensAfterModification); capb != 1 {
+		t.Errorf("The capacitiy of availableCanteensAfterModification should be the same as its length (1) but got %d", capb)
+	}
+
+}
