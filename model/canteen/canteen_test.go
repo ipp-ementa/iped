@@ -163,3 +163,33 @@ func TestAddTodayMethodReturnsErrorIfMenuOfTheSameTypeAlreadyExists(t *testing.T
 		t.Errorf("The length of availableMenus slice should still be 2 but got: %d", lenad)
 	}
 }
+
+func TestCanteensWithDifferentNameAreNotEqual(t *testing.T) {
+	_canteenone, _ := New("Cantina do H")
+
+	_canteentwo, _ := New("Cantina do F")
+
+	if _canteenone.Equals(_canteentwo) {
+		t.Errorf("_canteenone name is: %s and _canteentwo name is: %s, which are different, but were proved to be equal", _canteenone.Name, _canteentwo.Name)
+	}
+}
+
+func TestCanteensWithEqualNameAreEqual(t *testing.T) {
+	_canteenone, _ := New("Cantina do H")
+
+	_canteentwo, _ := New("Cantina do H")
+
+	if !_canteenone.Equals(_canteentwo) {
+		t.Errorf("_canteenone name is: %s and _canteentwo name is: %s, which are equal, but were proved to not be equal", _canteenone.Name, _canteentwo.Name)
+	}
+}
+
+func TestCanteensWithEqualNameButDifferentCaseAreEqual(t *testing.T) {
+	_canteenone, _ := New("Cantina do H")
+
+	_canteentwo, _ := New("cantina do h")
+
+	if !_canteenone.Equals(_canteentwo) {
+		t.Errorf("_canteenone name is: %s and _canteentwo name is: %s, which are equal, but were proved to not be equal", _canteenone.Name, _canteentwo.Name)
+	}
+}
