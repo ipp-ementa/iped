@@ -31,14 +31,43 @@ func New(Name string) (Canteen, error) {
 	return canteen, err
 }
 
+// AddTodayMenu allows the addition of a menu to today available menus
+// A FieldError is returned if it was found to exist a menu that has the same type
+// as the existing available menus
+func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) error {
+
+	var err error
+
+	availableMenus := canteen.AvailableMenus()
+
+	if lena := len(availableMenus); lena != 0 {
+		index := 0
+		for index < lena {
+			if availableMenus[index].Type == Menu.Type {
+				index = lena
+				err = &customerror.FieldError{Field: "menus", Model: "canteen"}
+			} else {
+				index++
+			}
+		}
+	}
+
+	if err == nil {
+		availableMenus = append(availableMenus, Menu)
+		todayDate := todayDateTime()
+		canteen.menus[todayDate] = availableMenus
+	}
+
+	return err
+
+}
+
 // AvailableMenus returns the menus which the canteen is providing at the time being asked
 // If no menus are available an empty slice is returned
 // The returned slice is unmodifiable in order to prevent modifications
 func (canteen Canteen) AvailableMenus() []menu.Menu {
 
-	todayDate := time.Now()
-
-	todayDate = time.Date(todayDate.Year(), todayDate.Month(), todayDate.Day(), int(0), int(0), int(0), int(0), todayDate.Location())
+	todayDate := todayDateTime()
 
 	availableMenus, exists := canteen.menus[todayDate]
 
@@ -48,6 +77,16 @@ func (canteen Canteen) AvailableMenus() []menu.Menu {
 
 	return availableMenus
 
+}
+
+// Returns today date as a [time.Time] struct
+// The struct returned is formatted to be DD-MM-YYYY 00:00:00
+func todayDateTime() time.Time {
+	datetime := time.Now()
+
+	datetime = time.Date(datetime.Year(), datetime.Month(), datetime.Day(), int(0), int(0), int(0), int(0), datetime.Location())
+
+	return datetime
 }
 
 // This function grants that a canteen name is not empty, and if empty returns an error
