@@ -25,7 +25,7 @@ func New(Type int, Description string) (Dish, error) {
 		return dish, err
 	}
 
-	err = grantValidDescription(Description)
+	err = grantDescriptionIsNotEmpty(Description)
 
 	return dish, err
 }
@@ -36,9 +36,8 @@ func (dish Dish) Equals(comparingDish Dish) bool {
 	return dish.Type == comparingDish.Type && dish.Description == comparingDish.Description
 }
 
-// This function grants that a dish description is valid, and if not returns an error
-// A dish description is invalid if it is empty
-func grantValidDescription(description string) error {
+// This function grants that a dish description is not empty, and if not returns an error
+func grantDescriptionIsNotEmpty(description string) error {
 
 	var err error
 

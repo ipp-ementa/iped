@@ -17,7 +17,7 @@ type Canteen struct {
 }
 
 // New initializes a Canteen model using its name
-// A FieldError is returned if the canteen name is invalid
+// A FieldError is returned if the canteen name is empty
 func New(Name string) (Canteen, error) {
 
 	canteen := Canteen{Name, map[time.Time][]menu.Menu{}}
