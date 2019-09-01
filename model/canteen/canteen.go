@@ -79,6 +79,13 @@ func (canteen Canteen) AvailableMenus() []menu.Menu {
 
 }
 
+// Equals compares equality between two canteens
+// A canteen proves true equality to other canteen if both canteen names are equal
+// Canteen names are case sensitive
+func (canteen Canteen) Equals(comparingCanteen Canteen) bool {
+	return strings.ToUpper(canteen.Name) == strings.ToUpper(comparingCanteen.Name)
+}
+
 // Returns today date as a [time.Time] struct
 // The struct returned is formatted to be DD-MM-YYYY 00:00:00
 func todayDateTime() time.Time {
