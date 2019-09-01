@@ -81,3 +81,85 @@ func TestAvailableMenusMethodReturnsUnmodifiableSlice(t *testing.T) {
 		t.Errorf("The length of availableMenusAfterModification slice should be 0 but got: %d", lenaam)
 	}
 }
+
+func TestAddTodayMethodUpdatesAvailableMenus(t *testing.T) {
+	_canteen, _ := New("Cantina do H")
+
+	availableMenus := _canteen.AvailableMenus()
+
+	// This verification is to grant that the returned available menus slice length is 0
+
+	if lenab := len(availableMenus); lenab != 0 {
+		t.Errorf("The length of availableMenus slice should be 0 but got: %d", lenab)
+	}
+
+	// If we add a new menu to today menus
+	// It should update the available menus
+
+	_dish, _ := dish.New(0, "Fried Noodles")
+
+	_menu, _ := menu.New(0, []dish.Dish{_dish})
+
+	_canteen.AddTodayMenu(_menu)
+
+	availableMenus = _canteen.AvailableMenus()
+
+	if lenam := len(availableMenus); lenam != 1 {
+		t.Errorf("The length of availableMenus slice should now be 1 but got: %d", lenam)
+	}
+}
+
+func TestAddTodayMethodReturnsErrorIfMenuOfTheSameTypeAlreadyExists(t *testing.T) {
+	_canteen, _ := New("Cantina do H")
+
+	availableMenus := _canteen.AvailableMenus()
+
+	// This verification is to grant that the returned available menus slice length is 0
+
+	if lenab := len(availableMenus); lenab != 0 {
+		t.Errorf("The length of availableMenus slice should be 0 but got: %d", lenab)
+	}
+
+	// If we add a new menu to today menus
+	// It should update the available menus
+
+	_dish, _ := dish.New(0, "Fried Noodles")
+
+	_menu, _ := menu.New(0, []dish.Dish{_dish})
+
+	_canteen.AddTodayMenu(_menu)
+
+	availableMenus = _canteen.AvailableMenus()
+
+	if lenam := len(availableMenus); lenam != 1 {
+		t.Errorf("The length of availableMenus slice should now be 1 but got: %d", lenam)
+	}
+
+	_differentTypeMenu, _ := menu.New(1, []dish.Dish{_dish})
+
+	// By adding a menu of different type the number of available menus should now be 2
+
+	_canteen.AddTodayMenu(_differentTypeMenu)
+
+	availableMenus = _canteen.AvailableMenus()
+
+	if lenad := len(availableMenus); lenad != 2 {
+		t.Errorf("The length of availableMenus slice should now be 2 but got: %d", lenad)
+	}
+
+	// By adding a menu of the same type, an error should return and the number of available menus should still be 2
+
+	_sameTypeMenu, _ := menu.New(0, []dish.Dish{_dish})
+
+	err := _canteen.AddTodayMenu(_sameTypeMenu)
+
+	if err == nil {
+		t.Errorf("AddTodayMethod should have returned an error")
+	}
+
+	availableMenus = _canteen.AvailableMenus()
+
+	if lenad := len(availableMenus); lenad != 2 {
+		t.Errorf("The length of availableMenus slice should still be 2 but got: %d", lenad)
+	}
+}
