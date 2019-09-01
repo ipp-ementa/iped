@@ -14,7 +14,7 @@ import (
 type School struct {
 	Acronym  string
 	Name     string
-	Canteens []canteen.Canteen
+	canteens []canteen.Canteen
 }
 
 // New initializes a school model using its acronym, name and canteens
@@ -55,6 +55,19 @@ func New(Acronym string, Name string, Canteens []canteen.Canteen) (School, error
 	}
 
 	return school, err
+}
+
+// Canteens returns the available canteens provided by a school as a slice
+// The returned slice has different reference of the one in School struct
+// In order to prevent modifications
+func (school School) Canteens() []canteen.Canteen {
+
+	availableCanteens := make([]canteen.Canteen, len(school.canteens))
+
+	copy(availableCanteens, school.canteens)
+
+	return availableCanteens
+
 }
 
 // This function grants that a school acronym is not empty, and if empty returns an error
