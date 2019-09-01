@@ -8,8 +8,8 @@ import (
 	"github.com/ipp-ementa/iped/model/customerror"
 )
 
-// School is a model that provides canteens
-// A school has a unique acronym, a descriptive name and has to provide at least one canteen
+// School is a model that offers canteens
+// A school has a unique acronym, a descriptive name and has to offer at least one canteen
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type School struct {
 	Acronym  string
