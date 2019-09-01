@@ -39,7 +39,11 @@ func New(Type int, Dishes []dish.Dish) (Menu, error) {
 // The returned slice has different reference of the one in Menu struct
 // In order to prevent modifications
 func (menu Menu) Dishes() []dish.Dish {
-	return menu.dishes
+	availableDishes := make([]dish.Dish, len(menu.dishes))
+
+	copy(availableDishes, menu.dishes)
+
+	return availableDishes
 }
 
 // This function grants that a menu type is valid, and if not returns an error

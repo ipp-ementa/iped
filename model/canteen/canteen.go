@@ -63,8 +63,10 @@ func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) error {
 }
 
 // AvailableMenus returns the menus which the canteen is providing at the time being asked
+// as a slice
 // If no menus are available an empty slice is returned
-// The returned slice is unmodifiable in order to prevent modifications
+// The returned slice has different reference of the one in Canteen struct
+// In order to prevent modifications
 func (canteen Canteen) AvailableMenus() []menu.Menu {
 
 	todayDate := todayDateTime()
@@ -73,6 +75,10 @@ func (canteen Canteen) AvailableMenus() []menu.Menu {
 
 	if !exists {
 		availableMenus = []menu.Menu{}
+	} else {
+		availableMenusCopy := make([]menu.Menu, len(canteen.menus))
+
+		copy(availableMenusCopy, availableMenus)
 	}
 
 	return availableMenus
