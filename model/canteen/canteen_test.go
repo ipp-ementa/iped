@@ -51,7 +51,7 @@ func TestAvailableMenusMethodReturnsEmptySliceIfNoMenusAreAvailable(t *testing.T
 	}
 }
 
-func TestAvailableMenusMethodReturnsUnmodifiableSlice(t *testing.T) {
+func TestAvailableMenusMethodReturnsSliceWithDifferentReference(t *testing.T) {
 	_canteen, _ := New("Cantina do H")
 
 	availableMenus := _canteen.AvailableMenus()

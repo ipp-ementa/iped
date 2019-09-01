@@ -102,7 +102,7 @@ func TestExistingMenuTypeAndValidDishListDoesNotReturnError(t *testing.T) {
 	}
 }
 
-func TestDishesMethodReturnsUnmodifiableSlice(t *testing.T) {
+func TestDishesMethodReturnsSliceWithDifferentReference(t *testing.T) {
 	_dish := dish.Dish{Type: 0, Description: "Fried Noodles"}
 
 	dishes := []dish.Dish{_dish}
