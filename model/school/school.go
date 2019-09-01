@@ -70,6 +70,24 @@ func (school School) Canteens() []canteen.Canteen {
 
 }
 
+// AddCanteen allows the addition of a new canteen to the already provided by the school
+// An error is returned if the canteen being added already exists
+func (school *School) AddCanteen(canteen canteen.Canteen) error {
+	var err error
+
+	schoolCanteens := school.Canteens()
+
+	schoolCanteens = append(schoolCanteens, canteen)
+
+	err = grantNoDuplicatedCanteensExist(schoolCanteens)
+
+	if err == nil {
+		school.canteens = schoolCanteens
+	}
+
+	return err
+}
+
 // This function grants that a school acronym is not empty, and if empty returns an error
 func grantSchoolAcronymIsNotEmpty(acronym string) error {
 
