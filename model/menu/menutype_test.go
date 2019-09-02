@@ -2,7 +2,7 @@ package menu
 
 import "testing"
 
-func TestUnexistingMenuTypeFailsValidateFunction(t *testing.T) {
+func TestInvalidMenuTypeFailsValidateFunction(t *testing.T) {
 	invalid := Validate(-1)
 
 	if invalid {
@@ -16,7 +16,7 @@ func TestUnexistingMenuTypeFailsValidateFunction(t *testing.T) {
 	}
 }
 
-func TestExistingMenuTypeSucceedsValidateFunction(t *testing.T) {
+func TestValidMenuTypeSucceedsValidateFunction(t *testing.T) {
 
 	// First test is for Lunch menu type
 
@@ -33,4 +33,33 @@ func TestExistingMenuTypeSucceedsValidateFunction(t *testing.T) {
 	if !valid {
 		t.Error("Validate(1) failed but should have succeeded as 1 is the Dinner MenuType")
 	}
+}
+
+func TestCallingStringOnInvalidMenuTypeReturnsNilString(t *testing.T) {
+	invalidMenuType := MenuType(-1)
+
+	if str := invalidMenuType.String(); str != "nil" {
+		t.Errorf("MenuType(-1) is not valid so calling String() should have returned the string 'nil' but got: %s ", str)
+	}
+
+	invalidMenuType = MenuType(2)
+
+	if str := invalidMenuType.String(); str != "nil" {
+		t.Errorf("MenuType(2) is not valid so calling String() should have returned the string 'nil' but got: %s ", str)
+	}
+}
+
+func TestCallingStringOnValidMenuTypeReturnsProperString(t *testing.T) {
+	lunchMenuType := MenuType(0)
+
+	if str := lunchMenuType.String(); str != "lunch" {
+		t.Errorf("MenuType(0) is valid so calling String() should have returned the string 'lunch' but got: %s ", str)
+	}
+
+	dinnerMenuType := MenuType(1)
+
+	if str := dinnerMenuType.String(); str != "dinner" {
+		t.Errorf("MenuType(1) is valid so calling String() should have returned the string 'dinner' but got: %s ", str)
+	}
+
 }
