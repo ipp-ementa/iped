@@ -12,6 +12,24 @@ const (
 	Diet
 )
 
+// String is the implementation of stringer for DishType enum
+// If the DishType being converted is not valid the string "nil" will be returned
+func (Type DishType) String() string {
+
+	switch Type {
+	case Meat:
+		return "meat"
+	case Fish:
+		return "fish"
+	case Vegetarian:
+		return "vegetarian"
+	case Diet:
+		return "diet"
+	default:
+		return "nil"
+	}
+}
+
 // Validate check if a given integer is a valid dish type
 func Validate(dishtype int) bool {
 	return dishtype >= 0 && dishtype <= 3
