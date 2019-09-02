@@ -22,8 +22,8 @@ type GetDetailedDishInformationModelView struct {
 	Description string `json:"description"`
 }
 
-// DishesToGetAvailableDishesModelView creates a GetAvailableDishesModelView using a slice of dishes
-func DishesToGetAvailableDishesModelView(dishes []dish.Dish) GetAvailableDishesModelView {
+// ToGetAvailableDishesModelView creates a GetAvailableDishesModelView using a slice of dish models
+func ToGetAvailableDishesModelView(dishes []dish.Dish) GetAvailableDishesModelView {
 	modelview := make(GetAvailableDishesModelView, len(dishes))
 
 	for index, dish := range dishes {
@@ -33,5 +33,11 @@ func DishesToGetAvailableDishesModelView(dishes []dish.Dish) GetAvailableDishesM
 		element.Type = dish.Type.String()
 	}
 
+	return modelview
+}
+
+// ToGetDetailedDishInformationModelView creates a GetDetailedDishInformationModelView using a dish model
+func ToGetDetailedDishInformationModelView(dish dish.Dish) GetDetailedDishInformationModelView {
+	modelview := GetDetailedDishInformationModelView{ID: int(dish.ID), Description: dish.Description, Type: dish.Type.String()}
 	return modelview
 }
