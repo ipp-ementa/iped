@@ -15,15 +15,16 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Canteen struct {
 	gorm.Model
-	Name  string
-	menus map[time.Time][]menu.Menu
+	SchoolID uint
+	Name     string
+	menus    map[time.Time][]menu.Menu
 }
 
 // New initializes a Canteen model using its name
 // A FieldError is returned if the canteen name is empty
 func New(Name string) (Canteen, error) {
 
-	canteen := Canteen{gorm.Model{}, Name, map[time.Time][]menu.Menu{}}
+	canteen := Canteen{gorm.Model{}, 0, Name, map[time.Time][]menu.Menu{}}
 
 	err := grantCanteenNameIsNotEmpty(Name)
 
