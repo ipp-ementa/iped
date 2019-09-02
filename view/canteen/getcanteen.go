@@ -32,3 +32,11 @@ func ToGetAvailableCanteensModelView(canteens []canteen.Canteen) GetAvailableCan
 
 	return modelview
 }
+
+// ToGetDetailedCanteenInformationModelView creates a GetDetailedCanteenInformationModelView using a canteen model
+func ToGetDetailedCanteenInformationModelView(canteen canteen.Canteen) GetDetailedCanteenInformationModelView {
+
+	modelview := GetDetailedCanteenInformationModelView{ID: int(canteen.ID), Name: canteen.Name}
+
+	return modelview
+}
