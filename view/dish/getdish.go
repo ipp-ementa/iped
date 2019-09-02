@@ -27,7 +27,7 @@ func ToGetAvailableDishesModelView(dishes []dish.Dish) GetAvailableDishesModelVi
 	modelview := make(GetAvailableDishesModelView, len(dishes))
 
 	for index, dish := range dishes {
-		element := modelview[index]
+		element := &modelview[index]
 		element.ID = int(dish.ID)
 		element.Description = dish.Description
 		element.Type = dish.Type.String()

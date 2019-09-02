@@ -34,7 +34,7 @@ func ToGetAvailableMenusModelView(menus []menu.Menu) GetAvailableMenusModelView 
 	modelview := make(GetAvailableMenusModelView, len(menus))
 
 	for index, menu := range menus {
-		element := modelview[index]
+		element := &modelview[index]
 		element.ID = int(menu.ID)
 		element.Type = menu.Type.String()
 	}
@@ -50,7 +50,7 @@ func ToGetDetailedMenuInformationModelView(menu menu.Menu) GetDetailedMenuInform
 	modelviewDishes := make([]innerDishesStruct, len(dishes))
 
 	for index, dish := range dishes {
-		element := modelviewDishes[index]
+		element := &modelviewDishes[index]
 		element.ID = int(dish.ID)
 		element.Description = dish.Description
 		element.Type = dish.Type.String()
