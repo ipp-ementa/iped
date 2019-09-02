@@ -10,6 +10,20 @@ const (
 	Dinner
 )
 
+// String is the implementation of stringer for MenuType enum
+// If the MenuType being converted is not valid the string "nil" will be returned
+func (Type MenuType) String() string {
+
+	switch Type {
+	case Lunch:
+		return "lunch"
+	case Dinner:
+		return "dinner"
+	default:
+		return "nil"
+	}
+}
+
 // Validate check if a given integer is a valid menu type
 func Validate(menutype int) bool {
 	return menutype == 0 || menutype == 1
