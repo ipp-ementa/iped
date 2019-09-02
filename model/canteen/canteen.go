@@ -4,6 +4,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/ipp-ementa/iped/model/customerror"
 	"github.com/ipp-ementa/iped/model/menu"
 )
@@ -12,6 +14,7 @@ import (
 // A canteen has a unique name and is offered by a school
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Canteen struct {
+	gorm.Model
 	Name  string
 	menus map[time.Time][]menu.Menu
 }
@@ -20,7 +23,7 @@ type Canteen struct {
 // A FieldError is returned if the canteen name is empty
 func New(Name string) (Canteen, error) {
 
-	canteen := Canteen{Name, map[time.Time][]menu.Menu{}}
+	canteen := Canteen{gorm.Model{}, Name, map[time.Time][]menu.Menu{}}
 
 	err := grantCanteenNameIsNotEmpty(Name)
 

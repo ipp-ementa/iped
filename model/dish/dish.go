@@ -3,12 +3,15 @@ package dish
 import (
 	"strings"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/ipp-ementa/iped/model/customerror"
 )
 
 // Dish is a model for what a person can choose to eat in canteen
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Dish struct {
+	gorm.Model
 	Type        DishType
 	Description string
 }
@@ -17,7 +20,7 @@ type Dish struct {
 // A FieldError is returned either if the dish description is empty or the dish type isn't valid
 func New(Type int, Description string) (Dish, error) {
 
-	dish := Dish{DishType(Type), Description}
+	dish := Dish{gorm.Model{}, DishType(Type), Description}
 
 	err := grantValidDishType(Type)
 

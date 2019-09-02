@@ -3,11 +3,13 @@ package menu
 import (
 	"github.com/ipp-ementa/iped/model/customerror"
 	"github.com/ipp-ementa/iped/model/dish"
+	"github.com/jinzhu/gorm"
 )
 
 // Menu is a model that contains a set of dishes available at either lunch or dinner
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Menu struct {
+	gorm.Model
 	Type   MenuType
 	dishes []dish.Dish
 }
@@ -16,7 +18,7 @@ type Menu struct {
 // A FieldError is returned either if the menu type is invalid, no dishes were provided or the dishes are not unique
 func New(Type int, Dishes []dish.Dish) (Menu, error) {
 
-	menu := Menu{MenuType(Type), Dishes}
+	menu := Menu{gorm.Model{}, MenuType(Type), Dishes}
 
 	err := grantValidMenuType(Type)
 

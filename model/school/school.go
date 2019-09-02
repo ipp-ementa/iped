@@ -4,6 +4,8 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/jinzhu/gorm"
+
 	"github.com/ipp-ementa/iped/model/canteen"
 	"github.com/ipp-ementa/iped/model/customerror"
 )
@@ -12,6 +14,7 @@ import (
 // A school has a unique acronym, a descriptive name and has to offer at least one canteen
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type School struct {
+	gorm.Model
 	Acronym  string
 	Name     string
 	canteens []canteen.Canteen
@@ -22,7 +25,7 @@ type School struct {
 // name is empty, no canteens were provided or if it was found a duplicated canteen
 func New(Acronym string, Name string, Canteens []canteen.Canteen) (School, error) {
 
-	school := School{Acronym, Name, Canteens}
+	school := School{gorm.Model{}, Acronym, Name, Canteens}
 
 	err := grantSchoolAcronymIsNotEmpty(Acronym)
 
