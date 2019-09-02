@@ -1,6 +1,8 @@
 package menu
 
-import "github.com/ipp-ementa/iped/model/menu"
+import (
+	"github.com/ipp-ementa/iped/model/menu"
+)
 
 // This file contains model views representation for GET functionalities of menus collection
 
@@ -16,13 +18,15 @@ type GetAvailableMenusModelView []struct {
 // for the detailed menu information functionality
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/menus.md#detailed-menu-information
 type GetDetailedMenuInformationModelView struct {
-	ID     int    `json:"id"`
-	Type   string `json:"type"`
-	Dishes []struct {
-		ID          int    `json:"id"`
-		Type        string `json:"type"`
-		Description string `json:"description"`
-	} `json:"dishes"`
+	ID     int                 `json:"id"`
+	Type   string              `json:"type"`
+	Dishes []innerDishesStruct `json:"dishes"`
+}
+
+type innerDishesStruct struct {
+	ID          int    `json:"id"`
+	Type        string `json:"type"`
+	Description string `json:"description"`
 }
 
 // ToGetAvailableMenusModelView creates a GetAvailableMenusModelView using a slice of menu models
@@ -34,6 +38,25 @@ func ToGetAvailableMenusModelView(menus []menu.Menu) GetAvailableMenusModelView 
 		element.ID = int(menu.ID)
 		element.Type = menu.Type.String()
 	}
+
+	return modelview
+}
+
+// ToGetDetailedMenuInformationModelView creates a GetDetailedMenuInformationModelView using a menu model
+func ToGetDetailedMenuInformationModelView(menu menu.Menu) GetDetailedMenuInformationModelView {
+
+	dishes := menu.Dishes()
+
+	modelviewDishes := make([]innerDishesStruct, len(dishes))
+
+	for index, dish := range dishes {
+		element := modelviewDishes[index]
+		element.ID = int(dish.ID)
+		element.Description = dish.Description
+		element.Type = dish.Type.String()
+	}
+
+	modelview := GetDetailedMenuInformationModelView{ID: int(menu.ID), Type: menu.Type.String(), Dishes: modelviewDishes}
 
 	return modelview
 }
