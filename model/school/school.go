@@ -15,7 +15,7 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type School struct {
 	gorm.Model
-	Acronym  string
+	Acronym  string `gorm:"UNIQUE"`
 	Name     string
 	canteens []canteen.Canteen
 }
