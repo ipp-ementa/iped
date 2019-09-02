@@ -41,3 +41,21 @@ func ToGetAvailableSchoolsModelView(schools []school.School) GetAvailableSchools
 
 	return modelview
 }
+
+// ToGetDetailedSchoolInformationModelView creates a GetDetailedSchoolInformationModelView using a school model
+func ToGetDetailedSchoolInformationModelView(school school.School) GetDetailedSchoolInformationModelView {
+
+	canteens := school.Canteens()
+
+	modelviewCanteens := make([]innerCanteensStruct, len(canteens))
+
+	for index, canteen := range canteens {
+		element := &modelviewCanteens[index]
+		element.ID = int(canteen.ID)
+		element.Name = canteen.Name
+	}
+
+	modelview := GetDetailedSchoolInformationModelView{ID: int(school.ID), Name: school.Name, Acronym: school.Acronym, Canteens: modelviewCanteens}
+
+	return modelview
+}
