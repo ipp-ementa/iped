@@ -12,6 +12,8 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Dish struct {
 	gorm.Model
+	// MenuID field is a foreign key so gorm is able to map a has may association between menu and dish
+	MenuID      uint
 	Type        DishType
 	Description string
 }
@@ -20,7 +22,7 @@ type Dish struct {
 // A FieldError is returned either if the dish description is empty or the dish type isn't valid
 func New(Type int, Description string) (Dish, error) {
 
-	dish := Dish{gorm.Model{}, DishType(Type), Description}
+	dish := Dish{gorm.Model{}, 0, DishType(Type), Description}
 
 	err := grantValidDishType(Type)
 
