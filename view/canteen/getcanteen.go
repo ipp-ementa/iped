@@ -1,5 +1,7 @@
 package canteen
 
+import "github.com/ipp-ementa/iped/model/canteen"
+
 // This file contains model views representation for GET functionalities of canteens collection
 
 // GetAvailableCanteensModelView is the model view representation
@@ -16,4 +18,17 @@ type GetAvailableCanteensModelView []struct {
 type GetDetailedCanteenInformationModelView struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
+}
+
+// ToGetAvailableCanteensModelView creates a GetAvailableCanteensModelView using a slice of canteen models
+func ToGetAvailableCanteensModelView(canteens []canteen.Canteen) GetAvailableCanteensModelView {
+	modelview := make(GetAvailableCanteensModelView, len(canteens))
+
+	for index, canteen := range canteens {
+		element := &modelview[index]
+		element.ID = int(canteen.ID)
+		element.Name = canteen.Name
+	}
+
+	return modelview
 }
