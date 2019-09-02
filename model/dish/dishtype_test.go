@@ -2,7 +2,7 @@ package dish
 
 import "testing"
 
-func TestUnexistingDishTypeFailsValidateFunction(t *testing.T) {
+func TestInvalidDishTypeFailsValidateFunction(t *testing.T) {
 	invalid := Validate(-1)
 
 	if invalid {
@@ -16,7 +16,7 @@ func TestUnexistingDishTypeFailsValidateFunction(t *testing.T) {
 	}
 }
 
-func TestExistingDishTypeSucceedsValidateFunction(t *testing.T) {
+func TestValidDishTypeSucceedsValidateFunction(t *testing.T) {
 
 	// First test is for Meat dish type
 
@@ -49,4 +49,45 @@ func TestExistingDishTypeSucceedsValidateFunction(t *testing.T) {
 	if !valid {
 		t.Error("Validate(3) failed but should have succeeded as 3 is the Diet DishType")
 	}
+}
+
+func TestCallingStringOnInvalidDishTypeReturnsNilString(t *testing.T) {
+	invalidDishType := DishType(-1)
+
+	if str := invalidDishType.String(); str != "nil" {
+		t.Errorf("DishType(-1) is not valid so calling String() should have returned the string 'nil' but got: %s ", str)
+	}
+
+	invalidDishType = DishType(4)
+
+	if str := invalidDishType.String(); str != "nil" {
+		t.Errorf("DishType(4) is not valid so calling String() should have returned the string 'nil' but got: %s ", str)
+	}
+}
+
+func TestCallingStringOnValidDishTypeReturnsProperString(t *testing.T) {
+	meatDishType := DishType(0)
+
+	if str := meatDishType.String(); str != "meat" {
+		t.Errorf("DishType(0) is valid so calling String() should have returned the string 'meat' but got: %s ", str)
+	}
+
+	fishDishType := DishType(1)
+
+	if str := fishDishType.String(); str != "fish" {
+		t.Errorf("DishType(1) is valid so calling String() should have returned the string 'fish' but got: %s ", str)
+	}
+
+	vegetarianDishType := DishType(2)
+
+	if str := vegetarianDishType.String(); str != "vegetarian" {
+		t.Errorf("DishType(2) is valid so calling String() should have returned the string 'vegetarian' but got: %s ", str)
+	}
+
+	dietDishType := DishType(3)
+
+	if str := dietDishType.String(); str != "diet" {
+		t.Errorf("DishType(3) is valid so calling String() should have returned the string 'diet' but got: %s ", str)
+	}
+
 }
