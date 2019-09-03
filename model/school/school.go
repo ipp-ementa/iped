@@ -11,7 +11,7 @@ import (
 )
 
 // School is a model that offers canteens
-// A school has a unique acronym, a descriptive name and has to offer at least one canteen
+// A school has a unique acronym, a descriptive name and needs to offer at least one canteen
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type School struct {
 	gorm.Model
