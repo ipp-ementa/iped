@@ -1,6 +1,10 @@
 package school
 
-import "github.com/ipp-ementa/iped/model/school"
+import (
+	"strings"
+
+	"github.com/ipp-ementa/iped/model/school"
+)
 
 // This file contains model views representation for GET functionalities of schools collection
 
@@ -35,7 +39,7 @@ func ToGetAvailableSchoolsModelView(schools []school.School) GetAvailableSchools
 	for index, school := range schools {
 		element := &modelview[index]
 		element.ID = int(school.ID)
-		element.Acronym = school.Acronym
+		element.Acronym = strings.ToUpper(school.Acronym)
 		element.Name = school.Name
 	}
 
@@ -55,7 +59,7 @@ func ToGetDetailedSchoolInformationModelView(school school.School) GetDetailedSc
 		element.Name = canteen.Name
 	}
 
-	modelview := GetDetailedSchoolInformationModelView{ID: int(school.ID), Name: school.Name, Acronym: school.Acronym, Canteens: modelviewCanteens}
+	modelview := GetDetailedSchoolInformationModelView{ID: int(school.ID), Name: school.Name, Acronym: strings.ToUpper(school.Acronym), Canteens: modelviewCanteens}
 
 	return modelview
 }
