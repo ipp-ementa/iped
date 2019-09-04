@@ -2,8 +2,6 @@ package dish
 
 import (
 	"testing"
-
-	"github.com/ipp-ementa/iped/model/customerror"
 )
 
 func TestUnexistingDishTypeReturnError(t *testing.T) {
@@ -13,7 +11,7 @@ func TestUnexistingDishTypeReturnError(t *testing.T) {
 		t.Error("Dish initialization should have returned an error as there is no dish type for the value -1")
 	}
 
-	if err.(*customerror.FieldError).Field != "dishtype" {
+	if err.Field != "dishtype" {
 		t.Error("Even though that dish initialization returned an error, the error should have been caused by the field dishtype")
 	}
 }
@@ -33,7 +31,7 @@ func TestEmptyDishDescriptionReturnError(t *testing.T) {
 		t.Error("Dish initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "description" {
+	if err.Field != "description" {
 		t.Error("Even though that dish initialization returned an error, the error should have been caused by the field description")
 	}
 }
@@ -45,7 +43,7 @@ func TestDescriptionWithOnlySpacesReturnError(t *testing.T) {
 		t.Error("Dish initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "description" {
+	if err.Field != "description" {
 		t.Error("Even though that dish initialization returned an error, the error should have been caused by the field description")
 	}
 }
