@@ -20,7 +20,7 @@ type Dish struct {
 
 // New initializes a Dish model using a dish type and a description
 // A FieldError is returned either if the dish description is empty or the dish type isn't valid
-func New(Type int, Description string) (Dish, error) {
+func New(Type int, Description string) (Dish, *customerror.FieldError) {
 
 	dish := Dish{gorm.Model{}, 0, DishType(Type), Description}
 
@@ -41,10 +41,10 @@ func (dish Dish) Equals(comparingDish Dish) bool {
 	return dish.Type == comparingDish.Type && dish.Description == comparingDish.Description
 }
 
-// This function grants that a dish description is not empty, and if not returns an error
-func grantDescriptionIsNotEmpty(description string) error {
+// This function grants that a dish description is not empty, and if not returns a FieldError
+func grantDescriptionIsNotEmpty(description string) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(description)) == 0 {
 		err = &customerror.FieldError{Field: "description", Model: "dish"}
@@ -53,11 +53,11 @@ func grantDescriptionIsNotEmpty(description string) error {
 	return err
 }
 
-// This function grants that a dish type is valid, and if not returns an error
+// This function grants that a dish type is valid, and if not returns a FieldError
 // See [DishType.Validate] for validation logic
-func grantValidDishType(dishtype int) error {
+func grantValidDishType(dishtype int) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if !Validate(dishtype) {
 		err = &customerror.FieldError{Field: "dishtype", Model: "dish"}
