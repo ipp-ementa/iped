@@ -4,8 +4,6 @@ import (
 	"testing"
 
 	"github.com/ipp-ementa/iped/model/dish"
-
-	"github.com/ipp-ementa/iped/model/customerror"
 )
 
 func TestUnexistingMenuTypeReturnError(t *testing.T) {
@@ -20,7 +18,7 @@ func TestUnexistingMenuTypeReturnError(t *testing.T) {
 		t.Error("Menu initialization should have returned an error as there is no menu type for the value -1")
 	}
 
-	if err.(*customerror.FieldError).Field != "menutype" {
+	if err.Field != "menutype" {
 		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field menutype")
 	}
 }
@@ -45,7 +43,7 @@ func TestNilDishListReturnError(t *testing.T) {
 		t.Error("Menu initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "dishes" {
+	if err.Field != "dishes" {
 		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field dishes")
 	}
 }
@@ -57,7 +55,7 @@ func TestEmptyDishListReturnError(t *testing.T) {
 		t.Error("Menu initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "dishes" {
+	if err.Field != "dishes" {
 		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field dishes")
 	}
 }
@@ -73,7 +71,7 @@ func TestDishListWithEqualDishesReturnError(t *testing.T) {
 		t.Error("Menu initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "dishes" {
+	if err.Field != "dishes" {
 		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field dishes")
 	}
 
@@ -85,7 +83,7 @@ func TestDishListWithEqualDishesReturnError(t *testing.T) {
 		t.Error("Menu initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "dishes" {
+	if err.Field != "dishes" {
 		t.Error("Even though that menu initialization returned an error, the error should have been caused by the field dishes")
 	}
 }
