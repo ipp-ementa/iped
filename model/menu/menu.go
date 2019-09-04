@@ -16,7 +16,7 @@ type Menu struct {
 
 // New initializes a Menu model using a menu type and a set of dishes
 // A FieldError is returned either if the menu type is invalid, no dishes were provided or the dishes are not unique
-func New(Type int, Dishes []dish.Dish) (Menu, error) {
+func New(Type int, Dishes []dish.Dish) (Menu, *customerror.FieldError) {
 
 	menu := Menu{gorm.Model{}, MenuType(Type), Dishes}
 
@@ -48,11 +48,11 @@ func (menu Menu) Dishes() []dish.Dish {
 	return availableDishes
 }
 
-// This function grants that a menu type is valid, and if not returns an error
+// This function grants that a menu type is valid, and if not returns a FieldError
 // See [MenuType.Validate] for validation logic
-func grantValidMenuType(menutype int) error {
+func grantValidMenuType(menutype int) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if !Validate(menutype) {
 		err = &customerror.FieldError{Field: "menutype", Model: "menu"}
@@ -62,10 +62,10 @@ func grantValidMenuType(menutype int) error {
 }
 
 // This function grants that at least one dish is provided in given dish slice
-// If the given dish slice is nil or empty an error is returned
-func grantThatAtLeastOneDishWasProvided(dishes []dish.Dish) error {
+// If the given dish slice is nil or empty a FieldError is returned
+func grantThatAtLeastOneDishWasProvided(dishes []dish.Dish) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if dishes == nil || len(dishes) == 0 {
 		err = &customerror.FieldError{Field: "dishes", Model: "menu"}
@@ -75,10 +75,10 @@ func grantThatAtLeastOneDishWasProvided(dishes []dish.Dish) error {
 }
 
 // This function grants that all dishes given in a slice are unique
-// If a dish proves equality to any other dish in the slice, an error is returned
-func grantNoDuplicatedDishesExist(dishes []dish.Dish) error {
+// If a dish proves equality to any other dish in the slice, a FieldError is returned
+func grantNoDuplicatedDishesExist(dishes []dish.Dish) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	unique := true
 	dishesLength := len(dishes)
