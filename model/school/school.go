@@ -23,7 +23,7 @@ type School struct {
 // New initializes a school model using its acronym, name and canteens
 // A FieldError is returned if the canteen acronym is empty or has spaces between letters,
 // name is empty, no canteens were provided or if it was found a duplicated canteen
-func New(Acronym string, Name string, Canteens []canteen.Canteen) (School, error) {
+func New(Acronym string, Name string, Canteens []canteen.Canteen) (School, *customerror.FieldError) {
 
 	school := School{gorm.Model{}, Acronym, Name, Canteens}
 
@@ -75,8 +75,8 @@ func (school School) Canteens() []canteen.Canteen {
 
 // AddCanteen allows the addition of a new canteen to the already provided by the school
 // An error is returned if the canteen being added already exists
-func (school *School) AddCanteen(canteen canteen.Canteen) error {
-	var err error
+func (school *School) AddCanteen(canteen canteen.Canteen) *customerror.FieldError {
+	var err *customerror.FieldError
 
 	schoolCanteens := school.Canteens()
 
@@ -91,10 +91,10 @@ func (school *School) AddCanteen(canteen canteen.Canteen) error {
 	return err
 }
 
-// This function grants that a school acronym is not empty, and if empty returns an error
-func grantSchoolAcronymIsNotEmpty(acronym string) error {
+// This function grants that a school acronym is not empty, and if empty returns a FieldError
+func grantSchoolAcronymIsNotEmpty(acronym string) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(acronym)) == 0 {
 		err = &customerror.FieldError{Field: "acronym", Model: "school"}
@@ -104,10 +104,10 @@ func grantSchoolAcronymIsNotEmpty(acronym string) error {
 
 }
 
-// This function grants that a school acronym does not have spaces between letters, or else returns an error
-func grantSchoolAcronymDoesNotHaveSpacesBetweenLetters(acronym string) error {
+// This function grants that a school acronym does not have spaces between letters, or else returns a FieldError
+func grantSchoolAcronymDoesNotHaveSpacesBetweenLetters(acronym string) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	acronymLength := len(acronym)
 
@@ -129,10 +129,10 @@ func grantSchoolAcronymDoesNotHaveSpacesBetweenLetters(acronym string) error {
 
 }
 
-// This function grants that a school name is not empty, and if empty returns an error
-func grantSchoolNameIsNotEmpty(name string) error {
+// This function grants that a school name is not empty, and if empty returns a FieldError
+func grantSchoolNameIsNotEmpty(name string) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(name)) == 0 {
 		err = &customerror.FieldError{Field: "name", Model: "school"}
@@ -143,10 +143,10 @@ func grantSchoolNameIsNotEmpty(name string) error {
 }
 
 // This function grants that at least one canteen is provided in given canteen slice
-// If the given canteen slice is nil or empty an error is returned
-func grantAtLeastOneCanteenIsProvided(canteens []canteen.Canteen) error {
+// If the given canteen slice is nil or empty a FieldError is returned
+func grantAtLeastOneCanteenIsProvided(canteens []canteen.Canteen) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if canteens == nil || len(canteens) == 0 {
 		err = &customerror.FieldError{Field: "canteens", Model: "school"}
@@ -157,10 +157,10 @@ func grantAtLeastOneCanteenIsProvided(canteens []canteen.Canteen) error {
 }
 
 // This function grants that all canteen given in a slice are unique
-// If a canteen proves equality to any other canteen in the slice, an error is returned
-func grantNoDuplicatedCanteensExist(canteens []canteen.Canteen) error {
+// If a canteen proves equality to any other canteen in the slice, a FieldError is returned
+func grantNoDuplicatedCanteensExist(canteens []canteen.Canteen) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	unique := true
 	canteensLength := len(canteens)
