@@ -49,7 +49,7 @@ func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) *customerror.FieldError {
 		for index < lena {
 			if availableMenus[index].Type == Menu.Type {
 				index = lena
-				err = &customerror.FieldError{Field: "menus", Model: "canteen"}
+				err = &customerror.FieldError{Field: "menus", Model: "canteen", Explanation: "canteen does not allow providing menus with the same type"}
 			} else {
 				index++
 			}
@@ -112,7 +112,7 @@ func grantCanteenNameIsNotEmpty(name string) *customerror.FieldError {
 	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(name)) == 0 {
-		err = &customerror.FieldError{Field: "name", Model: "canteen"}
+		err = &customerror.FieldError{Field: "name", Model: "canteen", Explanation: "canteen name cannot be an empty string"}
 	}
 
 	return err
