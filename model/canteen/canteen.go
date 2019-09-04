@@ -22,7 +22,7 @@ type Canteen struct {
 
 // New initializes a Canteen model using its name
 // A FieldError is returned if the canteen name is empty
-func New(Name string) (Canteen, error) {
+func New(Name string) (Canteen, *customerror.FieldError) {
 
 	canteen := Canteen{gorm.Model{}, 0, Name, map[time.Time][]menu.Menu{}}
 
@@ -38,9 +38,9 @@ func New(Name string) (Canteen, error) {
 // AddTodayMenu allows the addition of a menu to today available menus
 // A FieldError is returned if it was found to exist a menu that has the same type
 // as the existing available menus
-func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) error {
+func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	availableMenus := canteen.AvailableMenus()
 
@@ -106,10 +106,10 @@ func todayDateTime() time.Time {
 	return datetime
 }
 
-// This function grants that a canteen name is not empty, and if empty returns an error
-func grantCanteenNameIsNotEmpty(name string) error {
+// This function grants that a canteen name is not empty, and if empty returns an FieldError
+func grantCanteenNameIsNotEmpty(name string) *customerror.FieldError {
 
-	var err error
+	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(name)) == 0 {
 		err = &customerror.FieldError{Field: "name", Model: "canteen"}
