@@ -97,7 +97,7 @@ func grantSchoolAcronymIsNotEmpty(acronym string) *customerror.FieldError {
 	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(acronym)) == 0 {
-		err = &customerror.FieldError{Field: "acronym", Model: "school"}
+		err = &customerror.FieldError{Field: "acronym", Model: "school", Explanation: "school acronym cannot be an empty string"}
 	}
 
 	return err
@@ -122,7 +122,7 @@ func grantSchoolAcronymDoesNotHaveSpacesBetweenLetters(acronym string) *customer
 	}
 
 	if acronymLength == -2 {
-		err = &customerror.FieldError{Field: "acronym", Model: "school"}
+		err = &customerror.FieldError{Field: "acronym", Model: "school", Explanation: "school acronym cannot have spaces between letters"}
 	}
 
 	return err
@@ -135,7 +135,7 @@ func grantSchoolNameIsNotEmpty(name string) *customerror.FieldError {
 	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(name)) == 0 {
-		err = &customerror.FieldError{Field: "name", Model: "school"}
+		err = &customerror.FieldError{Field: "name", Model: "school", Explanation: "school name cannot be an empty string"}
 	}
 
 	return err
@@ -149,7 +149,7 @@ func grantAtLeastOneCanteenIsProvided(canteens []canteen.Canteen) *customerror.F
 	var err *customerror.FieldError
 
 	if canteens == nil || len(canteens) == 0 {
-		err = &customerror.FieldError{Field: "canteens", Model: "school"}
+		err = &customerror.FieldError{Field: "canteens", Model: "school", Explanation: "school requires at least one canteen"}
 	}
 
 	return err
@@ -180,7 +180,7 @@ func grantNoDuplicatedCanteensExist(canteens []canteen.Canteen) *customerror.Fie
 	}
 
 	if !unique {
-		err = &customerror.FieldError{Field: "canteens", Model: "school"}
+		err = &customerror.FieldError{Field: "canteens", Model: "school", Explanation: "school cannot have canteens with the same name"}
 	}
 
 	return err
