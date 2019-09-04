@@ -55,7 +55,7 @@ func grantValidMenuType(menutype int) *customerror.FieldError {
 	var err *customerror.FieldError
 
 	if !Validate(menutype) {
-		err = &customerror.FieldError{Field: "menutype", Model: "menu"}
+		err = &customerror.FieldError{Field: "menutype", Model: "menu", Explanation: "specified menu type is not valid"}
 	}
 
 	return err
@@ -68,7 +68,7 @@ func grantThatAtLeastOneDishWasProvided(dishes []dish.Dish) *customerror.FieldEr
 	var err *customerror.FieldError
 
 	if dishes == nil || len(dishes) == 0 {
-		err = &customerror.FieldError{Field: "dishes", Model: "menu"}
+		err = &customerror.FieldError{Field: "dishes", Model: "menu", Explanation: "menu requires at least one dish to be provided"}
 	}
 
 	return err
@@ -98,7 +98,7 @@ func grantNoDuplicatedDishesExist(dishes []dish.Dish) *customerror.FieldError {
 	}
 
 	if !unique {
-		err = &customerror.FieldError{Field: "dishes", Model: "menu"}
+		err = &customerror.FieldError{Field: "dishes", Model: "menu", Explanation: "menu cannot have duplicated dishes"}
 	}
 
 	return err
