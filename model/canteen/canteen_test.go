@@ -5,8 +5,6 @@ import (
 
 	"github.com/ipp-ementa/iped/model/dish"
 	"github.com/ipp-ementa/iped/model/menu"
-
-	"github.com/ipp-ementa/iped/model/customerror"
 )
 
 func TestEmptyCanteenNameReturnError(t *testing.T) {
@@ -16,7 +14,7 @@ func TestEmptyCanteenNameReturnError(t *testing.T) {
 		t.Error("Canteen initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "name" {
+	if err.Field != "name" {
 		t.Error("Even though that canteen initialization returned an error, the error should have been caused by the field name")
 	}
 }
@@ -28,7 +26,7 @@ func TestCanteenNameWithOnlySpacesReturnError(t *testing.T) {
 		t.Error("Canteen initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "name" {
+	if err.Field != "name" {
 		t.Error("Even though that canteen initialization returned an error, the error should have been caused by the field name")
 	}
 }
