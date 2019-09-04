@@ -4,8 +4,6 @@ import (
 	"testing"
 
 	"github.com/ipp-ementa/iped/model/canteen"
-
-	"github.com/ipp-ementa/iped/model/customerror"
 )
 
 func TestEmptySchoolAcronymReturnError(t *testing.T) {
@@ -20,7 +18,7 @@ func TestEmptySchoolAcronymReturnError(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "acronym" {
+	if err.Field != "acronym" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field acronym")
 	}
 }
@@ -37,7 +35,7 @@ func TestSchoolAcronymWithOnlySpacesReturnError(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "acronym" {
+	if err.Field != "acronym" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field acronym")
 	}
 }
@@ -54,7 +52,7 @@ func TestSchoolAcronymWithSpacesBetweenLettersReturnError(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "acronym" {
+	if err.Field != "acronym" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field acronym")
 	}
 }
@@ -71,7 +69,7 @@ func TestEmptySchoolNameReturnError(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "name" {
+	if err.Field != "name" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field name")
 	}
 }
@@ -88,7 +86,7 @@ func TestSchoolNameWithOnlySpacesReturnError(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "name" {
+	if err.Field != "name" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field name")
 	}
 }
@@ -103,7 +101,7 @@ func TestIfNoSchoolCanteensAreProvidedAnErrorIsReturned(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "canteens" {
+	if err.Field != "canteens" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field canteens")
 	}
 }
@@ -119,7 +117,7 @@ func TestIfDuplicatedSchoolCanteensAreProvidedAnErrorIsReturned(t *testing.T) {
 		t.Error("School initilization should have returned an error but got nil")
 	}
 
-	if err.(*customerror.FieldError).Field != "canteens" {
+	if err.Field != "canteens" {
 		t.Error("Even though that school initialization returned an error, the error should have been caused by the field canteens")
 	}
 }
