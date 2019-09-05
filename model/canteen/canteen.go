@@ -15,16 +15,24 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Canteen struct {
 	gorm.Model
-	SchoolID uint
+	SchoolID uint `gorm:"type:int REFERENCES schools(id) ON UPDATE CASCADE ON DELETE CASCADE"`
 	Name     string
-	menus    map[time.Time][]menu.Menu
+	MenusMap []MenuEntry
+}
+
+// MenuEntry struct is an entry to canteen menus map
+// Its declared as way to create a custom map with a list as Gorm does not permit the mapping of map types
+type MenuEntry struct {
+	gorm.Model
+	Time  time.Time
+	Menus []menu.Menu
 }
 
 // New initializes a Canteen model using its name
 // A FieldError is returned if the canteen name is empty
 func New(Name string) (Canteen, *customerror.FieldError) {
 
-	canteen := Canteen{gorm.Model{}, 0, Name, map[time.Time][]menu.Menu{}}
+	canteen := Canteen{gorm.Model{}, 0, Name, []MenuEntry{}}
 
 	err := grantCanteenNameIsNotEmpty(Name)
 
@@ -42,14 +50,20 @@ func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) *customerror.FieldError {
 
 	var err *customerror.FieldError
 
-	availableMenus := canteen.AvailableMenus()
+	entry := canteen.areThereMenusForToday()
+
+	availableMenus := []menu.Menu{}
+
+	if entry != -1 {
+		availableMenus = canteen.MenusMap[entry].Menus
+	}
 
 	if lena := len(availableMenus); lena != 0 {
 		index := 0
 		for index < lena {
 			if availableMenus[index].Type == Menu.Type {
 				index = lena
-				err = &customerror.FieldError{Field: "menus", Model: "canteen", Explanation: "canteen does not allow providing menus with the same type"}
+				err = &customerror.FieldError{Field: "menus", Model: "canteen", Explanation: "canteen does not allow providing menus of the same type"}
 			} else {
 				index++
 			}
@@ -58,8 +72,15 @@ func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) *customerror.FieldError {
 
 	if err == nil {
 		availableMenus = append(availableMenus, Menu)
-		todayDate := todayDateTime()
-		canteen.menus[todayDate] = availableMenus
+
+		if entry == -1 {
+			menuEntry := MenuEntry{Menus: availableMenus, Time: todayDateTime()}
+
+			canteen.MenusMap = append(canteen.MenusMap, menuEntry)
+
+		} else {
+			canteen.MenusMap[entry].Menus = availableMenus
+		}
 	}
 
 	return err
@@ -73,14 +94,15 @@ func (canteen *Canteen) AddTodayMenu(Menu menu.Menu) *customerror.FieldError {
 // In order to prevent modifications
 func (canteen Canteen) AvailableMenus() []menu.Menu {
 
-	todayDate := todayDateTime()
+	var availableMenus []menu.Menu
 
-	availableMenus, exists := canteen.menus[todayDate]
+	exists := canteen.areThereMenusForToday()
 
-	if !exists {
+	if exists == -1 {
 		availableMenus = []menu.Menu{}
 	} else {
-		availableMenusCopy := make([]menu.Menu, len(canteen.menus))
+		availableMenus = canteen.MenusMap[exists].Menus
+		availableMenusCopy := make([]menu.Menu, len(availableMenus))
 
 		copy(availableMenusCopy, availableMenus)
 	}
@@ -94,6 +116,21 @@ func (canteen Canteen) AvailableMenus() []menu.Menu {
 // Canteen names are case sensitive
 func (canteen Canteen) Equals(comparingCanteen Canteen) bool {
 	return strings.ToUpper(canteen.Name) == strings.ToUpper(comparingCanteen.Name)
+}
+
+// Checks availability of today's menus, and if available returns the index that points to menu entry on menu map
+// If there are no available menus, -1 is returned
+func (canteen Canteen) areThereMenusForToday() int {
+
+	todaydate := todayDateTime()
+
+	for index, entry := range canteen.MenusMap {
+		if entry.Time == todaydate {
+			return index
+		}
+	}
+
+	return -1
 }
 
 // Returns today date as a [time.Time] struct
