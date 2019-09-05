@@ -13,7 +13,7 @@ import (
 type Dish struct {
 	gorm.Model
 	// MenuID field is a foreign key so gorm is able to map a has may association between menu and dish
-	MenuID      uint
+	MenuID      uint `gorm:"type:int REFERENCES menus(id) ON UPDATE CASCADE ON DELETE CASCADE"`
 	Type        DishType
 	Description string
 }
