@@ -103,14 +103,14 @@ func TestDetailedSchoolInformationReturnsNotFoundIfResourceWasNotFound(t *testin
 	ctx := ech.NewContext(req, rec)
 	ctx.SetPath("/schools/:id")
 	ctx.SetParamNames("id")
-	ctx.SetParamValues("0")
+	ctx.SetParamValues("10")
 	ctx.Set("db", db.Db)
 
 	// GET /schools/:id
 	DetailedSchoolInformation(ctx)
 
 	if rec.Code != http.StatusNotFound {
-		t.Errorf("There is no school with the resource id '0' so the response status code should be 404 but was: %d", rec.Code)
+		t.Errorf("There is no school with the resource id '10' so the response status code should be 404 but was: %d", rec.Code)
 	}
 }
 
