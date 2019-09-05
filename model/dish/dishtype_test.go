@@ -91,3 +91,37 @@ func TestCallingStringOnValidDishTypeReturnsProperString(t *testing.T) {
 	}
 
 }
+
+func TestParseInvalidDishTypeStringReturnsInvalidDishType(t *testing.T) {
+	invalidDishType := Parse("dish")
+
+	if invalidDishType != -1 {
+		t.Errorf("'dish' is not a valid dish type so Parse should have returned -1 but got: %d ", invalidDishType)
+	}
+}
+
+func TestParseValidDishTypeStringReturnsValidDishType(t *testing.T) {
+	validDishType := Parse("meat")
+
+	if validDishType != 0 {
+		t.Errorf("'meat' is a valid dish type so Parse should have returned 0 but got: %d ", validDishType)
+	}
+
+	validDishType = Parse("fish")
+
+	if validDishType != 1 {
+		t.Errorf("'fish' is a valid dish type so Parse should have returned 1 but got: %d ", validDishType)
+	}
+
+	validDishType = Parse("vegetarian")
+
+	if validDishType != 2 {
+		t.Errorf("'vegetarian' is a valid dish type so Parse should have returned 2 but got: %d ", validDishType)
+	}
+
+	validDishType = Parse("diet")
+
+	if validDishType != 3 {
+		t.Errorf("'diet' is a valid dish type so Parse should have returned 3 but got: %d ", validDishType)
+	}
+}
