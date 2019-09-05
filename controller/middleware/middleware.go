@@ -29,12 +29,13 @@ func ResourceIdentifierValidationMiddleware() echo.MiddlewareFunc {
 			params := c.ParamNames()
 			for _, param := range params {
 				if strings.Contains(param, "id") {
-					id, err := strconv.Atoi(param)
+					id, err := strconv.Atoi(c.Param(param))
 					if err != nil || id <= 0 {
 						return c.NoContent(http.StatusNotFound)
 					}
 				}
 			}
+			next(c)
 			return nil
 		}
 	}
