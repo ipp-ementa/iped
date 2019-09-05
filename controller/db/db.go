@@ -29,21 +29,15 @@ func init() {
 		panic(fmt.Sprintf("Database '%s' couldn't be open due to: %s", conn, err))
 	}
 
-	var school school.School
+	odb.Exec("PRAGMA foreign_keys = ON")
 
-	var canteen canteen.Canteen
+	odb.AutoMigrate(&school.School{})
 
-	var menu menu.Menu
+	odb.AutoMigrate(&canteen.Canteen{})
 
-	var dish dish.Dish
+	odb.AutoMigrate(&menu.Menu{})
 
-	odb.AutoMigrate(&school)
-
-	odb.AutoMigrate(&canteen)
-
-	odb.AutoMigrate(&menu)
-
-	odb.AutoMigrate(&dish)
+	odb.AutoMigrate(&dish.Dish{})
 
 	Db = odb
 }
