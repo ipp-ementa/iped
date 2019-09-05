@@ -10,8 +10,8 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Menu struct {
 	gorm.Model
-	Type   MenuType
-	dishes []dish.Dish
+	Type        MenuType
+	DishesSlice []dish.Dish
 }
 
 // New initializes a Menu model using a menu type and a set of dishes
@@ -41,9 +41,9 @@ func New(Type int, Dishes []dish.Dish) (Menu, *customerror.FieldError) {
 // The returned slice has different reference of the one in Menu struct
 // In order to prevent modifications
 func (menu Menu) Dishes() []dish.Dish {
-	availableDishes := make([]dish.Dish, len(menu.dishes))
+	availableDishes := make([]dish.Dish, len(menu.DishesSlice))
 
-	copy(availableDishes, menu.dishes)
+	copy(availableDishes, menu.DishesSlice)
 
 	return availableDishes
 }
