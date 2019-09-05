@@ -97,23 +97,6 @@ func TestDetailedSchoolInformationReturnsInternalServerErrorIfDatabaseIsNotAvail
 	}
 }
 
-func TestDetailedSchoolInformationReturnsNotFoundIfResourceIdIsNotAnIntegerParsable(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/", nil)
-	rec := httptest.NewRecorder()
-	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools/:id")
-	ctx.SetParamNames("id")
-	ctx.SetParamValues("non integer")
-	ctx.Set("db", db.Db)
-
-	// GET /schools/:id
-	DetailedSchoolInformation(ctx)
-
-	if rec.Code != http.StatusNotFound {
-		t.Errorf("The resource id is not a parsable intenger so the response status code should be 404 but was: %d", rec.Code)
-	}
-}
-
 func TestDetailedSchoolInformationReturnsNotFoundIfResourceWasNotFound(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()

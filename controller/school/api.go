@@ -52,11 +52,7 @@ func DetailedSchoolInformation(c echo.Context) error {
 		return c.NoContent(http.StatusInternalServerError)
 	}
 
-	id, perr := strconv.Atoi(c.Param("id"))
-
-	if perr != nil {
-		return c.NoContent(http.StatusNotFound)
-	}
+	id, _ := strconv.Atoi(c.Param("id"))
 
 	var school model.School
 
