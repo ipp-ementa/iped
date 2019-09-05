@@ -130,11 +130,7 @@ func CreateNewSchool(c echo.Context) error {
 	}
 
 	// Creates school
-	cerr := db.Create(&school).Error
-
-	if cerr != nil {
-		return c.NoContent(http.StatusInternalServerError)
-	}
+	db.Create(&school)
 
 	modelviewres := view.ToGetDetailedSchoolInformationModelView(school)
 
