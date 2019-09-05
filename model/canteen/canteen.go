@@ -24,8 +24,9 @@ type Canteen struct {
 // Its declared as way to create a custom map with a list as Gorm does not permit the mapping of map types
 type MenuEntry struct {
 	gorm.Model
-	Time  time.Time
-	Menus []menu.Menu
+	CanteenID uint `gorm:"type:int REFERENCES canteens(id) ON UPDATE CASCADE ON DELETE CASCADE"`
+	Time      time.Time
+	Menus     []menu.Menu
 }
 
 // New initializes a Canteen model using its name
@@ -125,7 +126,7 @@ func (canteen Canteen) areThereMenusForToday() int {
 	todaydate := todayDateTime()
 
 	for index, entry := range canteen.MenusMap {
-		if entry.Time == todaydate {
+		if entry.Time.Equal(todaydate) {
 			return index
 		}
 	}
