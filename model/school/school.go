@@ -15,9 +15,9 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type School struct {
 	gorm.Model
-	Acronym  string `gorm:"UNIQUE"`
-	Name     string
-	canteens []canteen.Canteen
+	Acronym       string `gorm:"UNIQUE"`
+	Name          string
+	CanteensSlice []canteen.Canteen `gorm:"column:canteens"`
 }
 
 // New initializes a school model using its acronym, name and canteens
@@ -65,9 +65,9 @@ func New(Acronym string, Name string, Canteens []canteen.Canteen) (School, *cust
 // In order to prevent modifications
 func (school School) Canteens() []canteen.Canteen {
 
-	availableCanteens := make([]canteen.Canteen, len(school.canteens))
+	availableCanteens := make([]canteen.Canteen, len(school.CanteensSlice))
 
-	copy(availableCanteens, school.canteens)
+	copy(availableCanteens, school.CanteensSlice)
 
 	return availableCanteens
 
@@ -85,7 +85,7 @@ func (school *School) AddCanteen(canteen canteen.Canteen) *customerror.FieldErro
 	err = grantNoDuplicatedCanteensExist(schoolCanteens)
 
 	if err == nil {
-		school.canteens = schoolCanteens
+		school.CanteensSlice = schoolCanteens
 	}
 
 	return err
