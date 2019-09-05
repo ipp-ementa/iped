@@ -47,7 +47,7 @@ func grantDescriptionIsNotEmpty(description string) *customerror.FieldError {
 	var err *customerror.FieldError
 
 	if len(strings.TrimSpace(description)) == 0 {
-		err = &customerror.FieldError{Field: "description", Model: "dish"}
+		err = &customerror.FieldError{Field: "description", Model: "dish", Explanation: "dish description cannot be an empty string"}
 	}
 
 	return err
@@ -60,7 +60,7 @@ func grantValidDishType(dishtype int) *customerror.FieldError {
 	var err *customerror.FieldError
 
 	if !Validate(dishtype) {
-		err = &customerror.FieldError{Field: "dishtype", Model: "dish"}
+		err = &customerror.FieldError{Field: "dishtype", Model: "dish", Explanation: "dish type is not valid"}
 	}
 
 	return err
