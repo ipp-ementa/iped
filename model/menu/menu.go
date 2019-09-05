@@ -10,6 +10,7 @@ import (
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type Menu struct {
 	gorm.Model
+	MenuEntryID uint `gorm:"type:int REFERENCES menu_entries(id) ON UPDATE CASCADE ON DELETE CASCADE"`
 	Type        MenuType
 	DishesSlice []dish.Dish
 }
@@ -18,7 +19,7 @@ type Menu struct {
 // A FieldError is returned either if the menu type is invalid, no dishes were provided or the dishes are not unique
 func New(Type int, Dishes []dish.Dish) (Menu, *customerror.FieldError) {
 
-	menu := Menu{gorm.Model{}, MenuType(Type), Dishes}
+	menu := Menu{gorm.Model{}, 0, MenuType(Type), Dishes}
 
 	err := grantValidMenuType(Type)
 
