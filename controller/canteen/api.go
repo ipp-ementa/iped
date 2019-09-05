@@ -32,13 +32,13 @@ func AvailableCanteens(c echo.Context) error {
 
 	err := db.Find(&_school, _schoolID).Related(&_school.CanteensSlice).Error
 
-	_canteens := _school.Canteens()
-
 	// No need to check slice length as a school requires at least one canteen
 
 	if err != nil {
 		return c.NoContent(http.StatusNotFound)
 	}
+
+	_canteens := _school.Canteens()
 
 	modelview := view.ToGetAvailableCanteensModelView(_canteens)
 
