@@ -63,3 +63,25 @@ func TestCallingStringOnValidMenuTypeReturnsProperString(t *testing.T) {
 	}
 
 }
+
+func TestParseInvalidMenuTypeStringReturnsInvalidMenuType(t *testing.T) {
+	invalidMenuType := Parse("menu")
+
+	if invalidMenuType != -1 {
+		t.Errorf("'menu' is not a valid menu type so Parse should have returned -1 but got: %d ", invalidMenuType)
+	}
+}
+
+func TestParseValidMenuTypeStringReturnsValidMenuType(t *testing.T) {
+	validMenuType := Parse("lunch")
+
+	if validMenuType != 0 {
+		t.Errorf("'lunch' is a valid menu type so Parse should have returned 0 but got: %d ", validMenuType)
+	}
+
+	validMenuType = Parse("dinner")
+
+	if validMenuType != 1 {
+		t.Errorf("'dinner' is a valid menu type so Parse should have returned 1 but got: %d ", validMenuType)
+	}
+}
