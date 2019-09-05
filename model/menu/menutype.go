@@ -1,5 +1,7 @@
 package menu
 
+import "strings"
+
 // MenuType is a enum representation of a menu type
 // A UML overview of this enum can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type MenuType int
@@ -21,6 +23,19 @@ func (Type MenuType) String() string {
 		return "dinner"
 	default:
 		return "nil"
+	}
+}
+
+// Parse converts a string in a MenuType
+// If string is not recognized as a menu type, -1 is returned
+func Parse(menuAsString string) MenuType {
+	switch strings.ToLower(menuAsString) {
+	case "lunch":
+		return MenuType(0)
+	case "dinner":
+		return MenuType(1)
+	default:
+		return -1
 	}
 }
 
