@@ -1,5 +1,7 @@
 package dish
 
+import "strings"
+
 // DishType is a enum representation of a dish type
 // A UML overview of this enum can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type DishType int
@@ -27,6 +29,23 @@ func (Type DishType) String() string {
 		return "diet"
 	default:
 		return "nil"
+	}
+}
+
+// Parse converts a string in a DishType
+// If string is not recognized as a dish type, -1 is returned
+func Parse(dishAsString string) DishType {
+	switch strings.ToLower(dishAsString) {
+	case "meat":
+		return DishType(0)
+	case "fish":
+		return DishType(1)
+	case "vegetarian":
+		return DishType(2)
+	case "diet":
+		return DishType(3)
+	default:
+		return -1
 	}
 }
 
