@@ -91,9 +91,19 @@ func DetailedMenuInformation(c echo.Context) error {
 
 	_menuEntry := canteen.MenuEntry{}
 
-	err = db.Model(&_canteen).Related(&_canteen.MenusMap).Find(&_menuEntry, _menu.MenuEntryID).Error
+	err = db.Where(&_canteen).First(&_canteen).Error
 
 	// Now lets grant that the menu belongs to the canteen, and if not return Not Found
+
+	if err != nil {
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	_menuEntry.CanteenID = _canteen.ID
+
+	_menuEntry.ID = _menu.MenuEntryID
+
+	err = db.Where(&_menuEntry).First(&_menuEntry).Error
 
 	if err != nil {
 		return c.NoContent(http.StatusNotFound)
