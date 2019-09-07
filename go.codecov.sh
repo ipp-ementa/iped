@@ -1,4 +1,3 @@
-#!/usr/bin/env/ bash
 
 # Executes go test in all packages
 
