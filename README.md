@@ -1,6 +1,8 @@
 # iped
 IPED (ipp-ementa distributor) component
 
+[![codecov](https://codecov.io/gh/ipp-ementa/iped/branch/master/graph/badge.svg)](https://codecov.io/gh/ipp-ementa/iped)
+
 ## Documentation
 
 IPED documentation can be found at [here](https://github.com/ipp-ementa/iped-documentation)
@@ -20,3 +22,11 @@ The following environment variables are required to deploy IPED
 |--------|-----------|
 |IPED_PORT|The port which the web server will be available|
 |IPEW_CONNECTION_STRING|Absolute path to IPEW SQLite database file|
+
+### Changelog
+
+Version: `1.0`
+
+- All REST API functionalities implemented (as of 2019/09/07)
+- 100% unit tested models
+- 75.53% unit tested controllers
