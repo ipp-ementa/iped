@@ -35,6 +35,8 @@ func init() {
 
 	odb.AutoMigrate(&canteen.Canteen{})
 
+	odb.AutoMigrate(&canteen.MenuEntry{})
+
 	odb.AutoMigrate(&menu.Menu{})
 
 	odb.AutoMigrate(&dish.Dish{})
