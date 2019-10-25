@@ -3,7 +3,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 	"strconv"
 
@@ -18,13 +17,9 @@ import (
 
 func main() {
 
-	// Handler for "not found" routes
-
-	echo.NotFoundHandler = func(c echo.Context) error {
-		return c.String(http.StatusNotFound, "Page not found")
-	}
-
 	ech := echo.New()
+
+	middleware.NotFoundHandler()
 
 	ech.Use(middleware.DbAccessMiddleware())
 
