@@ -9,27 +9,10 @@ import (
 	"github.com/labstack/echo"
 )
 
-/*
-// NotFoundHandler is a middleware that checks if a route exists. If it doesn't, it returns 404 Page Not Found
-func NotFoundHandler() echo.MiddlewareFunc {
-	return func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			var notFoundHandler = func(c echo.Context) error {
-				return c.String(http.StatusNotFound, "Page not found")
-			}
-
-			c.SetHandler(notFoundHandler)
-			next(c)
-			return nil
-		}
-	}
-}
-*/
-
 // NotFoundHandler sets the NotFoundHandler of Echo's context to return 404 upon non-existent routes
-func NotFoundHandler() {
-	echo.NotFoundHandler = func(c echo.Context) error {
-		return c.String(http.StatusNotFound, "Page not found")
+func NotFoundHandler() func(c echo.Context) error {
+	return func(c echo.Context) error {
+		return c.NoContent(http.StatusNotFound)
 	}
 }
 
