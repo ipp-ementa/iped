@@ -32,8 +32,10 @@ func AvailableSchools(c echo.Context) error {
 
 	err := db.Find(&schools).Error
 
-	if err != nil || len(schools) == 0 {
-		return c.NoContent(http.StatusNotFound)
+	if err != nil {
+		return c.NoContent(http.StatusInternalServerError)
+	} else if len(schools) == 0 {
+		return c.NoContent(http.StatusOK)
 	}
 
 	modelview := view.ToGetAvailableSchoolsModelView(schools)

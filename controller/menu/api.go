@@ -48,7 +48,7 @@ func AvailableMenus(c echo.Context) error {
 	_menus := _canteen.AvailableMenus()
 
 	if len(_menus) == 0 {
-		return c.NoContent(http.StatusNotFound)
+		return c.NoContent(http.StatusOK)
 	}
 
 	modelview := view.ToGetAvailableMenusModelView(_menus)

@@ -35,7 +35,7 @@ func AvailableCanteens(c echo.Context) error {
 	// No need to check slice length as a school requires at least one canteen
 
 	if err != nil {
-		return c.NoContent(http.StatusNotFound)
+		return c.NoContent(http.StatusInternalServerError)
 	}
 
 	_canteens := _school.Canteens()

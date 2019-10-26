@@ -70,7 +70,7 @@ func AvailableDishes(c echo.Context) error {
 	_dishes := _menu.Dishes()
 
 	if len(_dishes) == 0 {
-		return c.NoContent(http.StatusNotFound)
+		return c.NoContent(http.StatusOK)
 	}
 
 	modelview := view.ToGetAvailableDishesModelView(_dishes)
