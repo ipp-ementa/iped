@@ -25,8 +25,8 @@ The following environment variables are required to deploy IPED
 
 ### Changelog
 
-Version: `1.0`
+Version: `1.1`
 
-- All REST API functionalities implemented (as of 2019/09/07)
+- Web server is now served at `:` host and at the port defined in `PORT` environment variable
 - 100% unit tested models
 - 75.53% unit tested controllers
