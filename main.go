@@ -17,6 +17,8 @@ import (
 
 func main() {
 
+	echo.NotFoundHandler = middleware.NotFoundHandler()
+
 	ech := echo.New()
 
 	ech.Use(middleware.DbAccessMiddleware())
