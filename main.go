@@ -61,7 +61,7 @@ func main() {
 		panic(fmt.Sprint("Server couldn't be open as the specified port is not valid"))
 	}
 
-	ech.Start(fmt.Sprintf("localhost:%d", port))
+	ech.Start(fmt.Sprintf(":%d", port))
 
 	defer db.Db.Close()
 }
