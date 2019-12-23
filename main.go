@@ -55,13 +55,13 @@ func main() {
 
 	ech.GET("/schools/:id/canteens/:id2/menus/:id3/dishes/:id4", dish.DetailedDishInformation)
 
-	port, perr := strconv.Atoi(os.Getenv("IPED_PORT"))
+	port, perr := strconv.Atoi(os.Getenv("PORT"))
 
 	if perr != nil {
 		panic(fmt.Sprint("Server couldn't be open as the specified port is not valid"))
 	}
 
-	ech.Start(fmt.Sprintf("localhost:%d", port))
+	ech.Start(fmt.Sprintf(":%d", port))
 
 	defer db.Db.Close()
 }
