@@ -20,7 +20,7 @@ The following environment variables are required to deploy IPED
 
 |Variable|Description|
 |--------|-----------|
-|IPED_PORT|The port which the web server will be available|
+|PORT|The port which the web server will be available|
 |IPEW_CONNECTION_STRING|Absolute path to IPEW SQLite database file|
 
 ### Changelog

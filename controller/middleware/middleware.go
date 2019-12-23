@@ -9,6 +9,13 @@ import (
 	"github.com/labstack/echo"
 )
 
+// NotFoundHandler sets the NotFoundHandler of Echo's context to return 404 upon non-existent routes
+func NotFoundHandler() func(c echo.Context) error {
+	return func(c echo.Context) error {
+		return c.NoContent(http.StatusNotFound)
+	}
+}
+
 // DbAccessMiddleware is a middleware that sets the database connection object using "db" as key
 func DbAccessMiddleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
