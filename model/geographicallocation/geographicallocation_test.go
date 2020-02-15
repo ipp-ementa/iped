@@ -1,4 +1,4 @@
-package canteen
+package geographicallocation
 
 import (
 	"testing"
