@@ -7,6 +7,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ipp-ementa/iped/model/geographicallocation"
+
 	"github.com/ipp-ementa/iped/model/dish"
 	"github.com/ipp-ementa/iped/model/menu"
 
@@ -25,7 +27,13 @@ func init() {
 
 	ech = echo.New()
 
-	_canteen, _ := canteen.New("Cantina do H")
+	_latitude := float32(45)
+
+	_longitude := float32(45)
+
+	_location, _ := geographicallocation.New(_latitude, _longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", _location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -33,7 +41,7 @@ func init() {
 
 	db.Db.Create(&_school)
 
-	_canteen2, _ := canteen.New("Cantina do ESMAE")
+	_canteen2, _ := canteen.New("Cantina do ESMAE", _location)
 
 	_dish, _ := dish.New(0, "Fried Noodles")
 
@@ -49,7 +57,7 @@ func init() {
 
 	db.Db.Create(&_school2)
 
-	_canteen3, _ := canteen.New("Cantina da ESS")
+	_canteen3, _ := canteen.New("Cantina da ESS", _location)
 
 	_dish2, _ := dish.New(0, "Fried Noodles")
 

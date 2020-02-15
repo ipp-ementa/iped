@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/ipp-ementa/iped/model/geographicallocation"
 	"github.com/ipp-ementa/iped/model/school"
 
 	"github.com/ipp-ementa/iped/model/canteen"
@@ -24,7 +25,13 @@ func init() {
 
 	ech = echo.New()
 
-	_canteen, _ := model.New("Cantina do H")
+	_latitude := float32(45)
+
+	_longitude := float32(45)
+
+	_location, _ := geographicallocation.New(_latitude, _longitude)
+
+	_canteen, _ := model.New("Cantina do H", _location)
 
 	_canteens := []canteen.Canteen{_canteen}
 

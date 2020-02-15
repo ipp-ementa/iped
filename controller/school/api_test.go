@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/ipp-ementa/iped/model/canteen"
+	"github.com/ipp-ementa/iped/model/geographicallocation"
 	"github.com/ipp-ementa/iped/model/school"
 	model "github.com/ipp-ementa/iped/model/school"
 
@@ -58,7 +59,13 @@ func TestAvailableSchoolsReturnsNotFoundIfNoSchoolsExist(t *testing.T) {
 
 func TestAvailableSchoolsReturnsOKIfSchoolsExist(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	_latitude := float32(45)
+
+	_longitude := float32(45)
+
+	_location, _ := geographicallocation.New(_latitude, _longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", _location)
 
 	_school, _ := model.New("ISEP", "Instituto Superior de Engenharia do Porto", []canteen.Canteen{_canteen})
 
@@ -116,7 +123,13 @@ func TestDetailedSchoolInformationReturnsNotFoundIfResourceWasNotFound(t *testin
 
 func TestDetailedSchoolInformationReturnsOKIfResourceWasFound(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do ESMAE")
+	_latitude := float32(45)
+
+	_longitude := float32(45)
+
+	_location, _ := geographicallocation.New(_latitude, _longitude)
+
+	_canteen, _ := canteen.New("Cantina do ESMAE", _location)
 
 	_school, _ := school.New("ESMAE", "Escola Superior de Música e Artes do Espetáculo", []canteen.Canteen{_canteen})
 
@@ -220,7 +233,13 @@ func TestCreateNewSchoolReturnsBadRequestIfSchoolFieldsAreInvalid(t *testing.T) 
 
 func TestCreateNewSchoolReturnsBadRequestIfSchoolWithSameAcronymAlreadyExists(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina da ESS")
+	_latitude := float32(45)
+
+	_longitude := float32(45)
+
+	_location, _ := geographicallocation.New(_latitude, _longitude)
+
+	_canteen, _ := canteen.New("Cantina da ESS", _location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
