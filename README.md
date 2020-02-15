@@ -25,8 +25,9 @@ The following environment variables are required to deploy IPED
 
 ### Changelog
 
-Version: `1.1`
+Version: `1.2`
 
-- Web server is now served at `:` host and at the port defined in `PORT` environment variable
+- API collections are now preceeded by `api/`
+- Canteen now references its geographical location
 - 100% unit tested models
 - 75.53% unit tested controllers
