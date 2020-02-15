@@ -30,7 +30,7 @@ func TestAvailableSchoolsReturnsInternalServerErrorIfDatabaseIsNotAvailable(t *t
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 
 	// GET /schools
 	AvailableSchools(ctx)
@@ -44,7 +44,7 @@ func TestAvailableSchoolsReturnsNotFoundIfNoSchoolsExist(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// GET /schools
@@ -69,7 +69,7 @@ func TestAvailableSchoolsReturnsOKIfSchoolsExist(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// GET /schools/:id
@@ -85,7 +85,7 @@ func TestDetailedSchoolInformationReturnsInternalServerErrorIfDatabaseIsNotAvail
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools/:id")
+	ctx.SetPath("/api/schools/:id")
 	ctx.SetParamNames("id")
 	ctx.SetParamValues("1")
 
@@ -101,7 +101,7 @@ func TestDetailedSchoolInformationReturnsNotFoundIfResourceWasNotFound(t *testin
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools/:id")
+	ctx.SetPath("/api/schools/:id")
 	ctx.SetParamNames("id")
 	ctx.SetParamValues("10")
 	ctx.Set("db", db.Db)
@@ -127,7 +127,7 @@ func TestDetailedSchoolInformationReturnsOKIfResourceWasFound(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools/:id")
+	ctx.SetPath("/api/schools/:id")
 	ctx.SetParamNames("id")
 	ctx.SetParamValues(strconv.FormatUint(uint64(id), 10))
 	ctx.Set("db", db.Db)
@@ -144,7 +144,7 @@ func TestCreateNewSchoolReturnsInternalServerErrorIfDatabaseIsNotAvailable(t *te
 	req := httptest.NewRequest(http.MethodPost, "/", nil)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 
 	// POST /schools
 	CreateNewSchool(ctx)
@@ -160,7 +160,7 @@ func TestCreateNewSchoolReturnsBadRequestIfRequestBodyIsEmpty(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// POST /schools
@@ -187,7 +187,7 @@ func TestCreateNewSchoolReturnsBadRequestIfCanteenFieldsAreInvalid(t *testing.T)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// POST /schools
@@ -207,7 +207,7 @@ func TestCreateNewSchoolReturnsBadRequestIfSchoolFieldsAreInvalid(t *testing.T) 
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// POST /schools
@@ -242,7 +242,7 @@ func TestCreateNewSchoolReturnsBadRequestIfSchoolWithSameAcronymAlreadyExists(t 
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// POST /schools
@@ -268,7 +268,7 @@ func TestCreateNewSchoolReturnsCreatedIfAllSchoolFieldsAreValid(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	ctx := ech.NewContext(req, rec)
-	ctx.SetPath("/schools")
+	ctx.SetPath("/api/schools")
 	ctx.Set("db", db.Db)
 
 	// POST /schools
