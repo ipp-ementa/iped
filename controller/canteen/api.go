@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/ipp-ementa/iped/model/geographicallocation"
+
 	"github.com/ipp-ementa/iped/model/school"
 
 	"github.com/ipp-ementa/iped/model/canteen"
@@ -92,7 +94,16 @@ func CreateNewCanteen(c echo.Context) error {
 
 	c.Bind(&modelview)
 
-	canteen, serr := model.New(modelview.Name)
+	location, lerr := geographicallocation.New(modelview.Location.Latitude, modelview.Location.Longitude)
+
+	if lerr != nil {
+
+		modelview := customerrorview.UsingFieldErrorToErrorMessageModelView(*lerr)
+
+		return c.JSON(http.StatusBadRequest, modelview)
+	}
+
+	canteen, serr := model.New(modelview.Name, location)
 
 	if serr != nil {
 
