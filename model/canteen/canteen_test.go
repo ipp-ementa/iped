@@ -3,12 +3,21 @@ package canteen
 import (
 	"testing"
 
+	"github.com/ipp-ementa/iped/model/geographicallocation"
+
 	"github.com/ipp-ementa/iped/model/dish"
 	"github.com/ipp-ementa/iped/model/menu"
 )
 
 func TestEmptyCanteenNameReturnError(t *testing.T) {
-	_, err := New("")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_, err := New("", location)
 
 	if err == nil {
 		t.Error("Canteen initilization should have returned an error but got nil")
@@ -20,7 +29,14 @@ func TestEmptyCanteenNameReturnError(t *testing.T) {
 }
 
 func TestCanteenNameWithOnlySpacesReturnError(t *testing.T) {
-	_, err := New(" ")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_, err := New(" ", location)
 
 	if err == nil {
 		t.Error("Canteen initilization should have returned an error but got nil")
@@ -32,7 +48,14 @@ func TestCanteenNameWithOnlySpacesReturnError(t *testing.T) {
 }
 
 func TestNotEmptyCanteenNameDoesNotReturnError(t *testing.T) {
-	_, err := New("Cantina do H")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_, err := New("Cantina do H", location)
 
 	if err != nil {
 		t.Errorf("Canteen initilization should have been successful but got %s", err)
@@ -40,7 +63,14 @@ func TestNotEmptyCanteenNameDoesNotReturnError(t *testing.T) {
 }
 
 func TestAvailableMenusMethodReturnsEmptySliceIfNoMenusAreAvailable(t *testing.T) {
-	_canteen, _ := New("Cantina do H")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := New("Cantina do H", location)
 
 	availableMenus := _canteen.AvailableMenus()
 
@@ -50,7 +80,14 @@ func TestAvailableMenusMethodReturnsEmptySliceIfNoMenusAreAvailable(t *testing.T
 }
 
 func TestAvailableMenusMethodReturnsSliceWithDifferentReference(t *testing.T) {
-	_canteen, _ := New("Cantina do H")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := New("Cantina do H", location)
 
 	availableMenus := _canteen.AvailableMenus()
 
@@ -92,7 +129,14 @@ func TestAvailableMenusMethodReturnsSliceWithDifferentReference(t *testing.T) {
 }
 
 func TestAddTodayMethodUpdatesAvailableMenus(t *testing.T) {
-	_canteen, _ := New("Cantina do H")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := New("Cantina do H", location)
 
 	availableMenus := _canteen.AvailableMenus()
 
@@ -119,7 +163,14 @@ func TestAddTodayMethodUpdatesAvailableMenus(t *testing.T) {
 }
 
 func TestAddTodayMethodReturnsErrorIfMenuOfTheSameTypeAlreadyExists(t *testing.T) {
-	_canteen, _ := New("Cantina do H")
+
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := New("Cantina do H", location)
 
 	availableMenus := _canteen.AvailableMenus()
 
@@ -174,9 +225,16 @@ func TestAddTodayMethodReturnsErrorIfMenuOfTheSameTypeAlreadyExists(t *testing.T
 }
 
 func TestCanteensWithDifferentNameAreNotEqual(t *testing.T) {
-	_canteenone, _ := New("Cantina do H")
 
-	_canteentwo, _ := New("Cantina do F")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteenone, _ := New("Cantina do H", location)
+
+	_canteentwo, _ := New("Cantina do F", location)
 
 	if _canteenone.Equals(_canteentwo) {
 		t.Errorf("_canteenone name is: %s and _canteentwo name is: %s, which are different, but were proved to be equal", _canteenone.Name, _canteentwo.Name)
@@ -184,9 +242,16 @@ func TestCanteensWithDifferentNameAreNotEqual(t *testing.T) {
 }
 
 func TestCanteensWithEqualNameAreEqual(t *testing.T) {
-	_canteenone, _ := New("Cantina do H")
 
-	_canteentwo, _ := New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteenone, _ := New("Cantina do H", location)
+
+	_canteentwo, _ := New("Cantina do H", location)
 
 	if !_canteenone.Equals(_canteentwo) {
 		t.Errorf("_canteenone name is: %s and _canteentwo name is: %s, which are equal, but were proved to not be equal", _canteenone.Name, _canteentwo.Name)
@@ -194,9 +259,16 @@ func TestCanteensWithEqualNameAreEqual(t *testing.T) {
 }
 
 func TestCanteensWithEqualNameButDifferentCaseAreEqual(t *testing.T) {
-	_canteenone, _ := New("Cantina do H")
 
-	_canteentwo, _ := New("cantina do h")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteenone, _ := New("Cantina do H", location)
+
+	_canteentwo, _ := New("cantina do h", location)
 
 	if !_canteenone.Equals(_canteentwo) {
 		t.Errorf("_canteenone name is: %s and _canteentwo name is: %s, which are equal, but were proved to not be equal", _canteenone.Name, _canteentwo.Name)

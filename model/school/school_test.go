@@ -4,11 +4,18 @@ import (
 	"testing"
 
 	"github.com/ipp-ementa/iped/model/canteen"
+	"github.com/ipp-ementa/iped/model/geographicallocation"
 )
 
 func TestEmptySchoolAcronymReturnError(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -25,7 +32,13 @@ func TestEmptySchoolAcronymReturnError(t *testing.T) {
 
 func TestSchoolAcronymWithOnlySpacesReturnError(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -42,7 +55,13 @@ func TestSchoolAcronymWithOnlySpacesReturnError(t *testing.T) {
 
 func TestSchoolAcronymWithSpacesBetweenLettersReturnError(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -59,7 +78,13 @@ func TestSchoolAcronymWithSpacesBetweenLettersReturnError(t *testing.T) {
 
 func TestEmptySchoolNameReturnError(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -76,7 +101,13 @@ func TestEmptySchoolNameReturnError(t *testing.T) {
 
 func TestSchoolNameWithOnlySpacesReturnError(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -108,7 +139,13 @@ func TestIfNoSchoolCanteensAreProvidedAnErrorIsReturned(t *testing.T) {
 
 func TestIfDuplicatedSchoolCanteensAreProvidedAnErrorIsReturned(t *testing.T) {
 
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 	_canteens := []canteen.Canteen{_canteen, _canteen}
 
 	_, err := New("ISEP", "Instituto Superior de Engenharia do Porto", _canteens)
@@ -123,7 +160,13 @@ func TestIfDuplicatedSchoolCanteensAreProvidedAnErrorIsReturned(t *testing.T) {
 }
 
 func TestNotEmptyAndNoSpacesBetweenLettersSchoolAcronymDoesNotReturnError(t *testing.T) {
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -135,7 +178,13 @@ func TestNotEmptyAndNoSpacesBetweenLettersSchoolAcronymDoesNotReturnError(t *tes
 }
 
 func TestNotEmptySchoolNameDoesNotReturnError(t *testing.T) {
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -147,7 +196,13 @@ func TestNotEmptySchoolNameDoesNotReturnError(t *testing.T) {
 }
 
 func TestNotEmptyOrDuplicatedSchoolCanteensDoesNotReturnError(t *testing.T) {
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -159,7 +214,13 @@ func TestNotEmptyOrDuplicatedSchoolCanteensDoesNotReturnError(t *testing.T) {
 }
 
 func TestCanteensMethodReturnsSliceWithDifferentReference(t *testing.T) {
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -182,7 +243,7 @@ func TestCanteensMethodReturnsSliceWithDifferentReference(t *testing.T) {
 	// If we add a new canteen to the the returned slice,
 	// it should not modify the slice pointed on the school struct
 
-	_differentCanteen, _ := canteen.New("Cantina do F")
+	_differentCanteen, _ := canteen.New("Cantina do F", location)
 
 	availableCanteens = append(availableCanteens, _differentCanteen)
 
@@ -203,7 +264,13 @@ func TestCanteensMethodReturnsSliceWithDifferentReference(t *testing.T) {
 }
 
 func TestAddCanteenReturnsErrorOnDuplicatedCanteen(t *testing.T) {
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -215,7 +282,7 @@ func TestAddCanteenReturnsErrorOnDuplicatedCanteen(t *testing.T) {
 		t.Errorf("It should only exist 1 school canteen but got: %d", lena)
 	}
 
-	_duplicatedCanteen, _ := canteen.New("cantina do h")
+	_duplicatedCanteen, _ := canteen.New("cantina do h", location)
 
 	err := _school.AddCanteen(_duplicatedCanteen)
 
@@ -231,7 +298,13 @@ func TestAddCanteenReturnsErrorOnDuplicatedCanteen(t *testing.T) {
 }
 
 func TestAddCanteenDoesNotReturnErrorOnCanteenWithDifferentName(t *testing.T) {
-	_canteen, _ := canteen.New("Cantina do H")
+	latitude := float32(45)
+
+	longitude := float32(45)
+
+	location, _ := geographicallocation.New(latitude, longitude)
+
+	_canteen, _ := canteen.New("Cantina do H", location)
 
 	_canteens := []canteen.Canteen{_canteen}
 
@@ -243,7 +316,7 @@ func TestAddCanteenDoesNotReturnErrorOnCanteenWithDifferentName(t *testing.T) {
 		t.Errorf("It should only exist 1 school canteen but got: %d", lena)
 	}
 
-	_differentNameCanteen, _ := canteen.New("cantina do f")
+	_differentNameCanteen, _ := canteen.New("cantina do f", location)
 
 	err := _school.AddCanteen(_differentNameCanteen)
 

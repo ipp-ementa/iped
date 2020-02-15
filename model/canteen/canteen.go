@@ -7,6 +7,7 @@ import (
 	"github.com/jinzhu/gorm"
 
 	"github.com/ipp-ementa/iped/model/customerror"
+	"github.com/ipp-ementa/iped/model/geographicallocation"
 	"github.com/ipp-ementa/iped/model/menu"
 )
 
@@ -18,6 +19,7 @@ type Canteen struct {
 	SchoolID uint `gorm:"type:int REFERENCES schools(id) ON UPDATE CASCADE ON DELETE CASCADE"`
 	Name     string
 	MenusMap []MenuEntry
+	Location geographicallocation.GeographicalLocation
 }
 
 // MenuEntry struct is an entry to canteen menus map
@@ -31,9 +33,9 @@ type MenuEntry struct {
 
 // New initializes a Canteen model using its name
 // A FieldError is returned if the canteen name is empty
-func New(Name string) (Canteen, *customerror.FieldError) {
+func New(Name string, Location geographicallocation.GeographicalLocation) (Canteen, *customerror.FieldError) {
 
-	canteen := Canteen{gorm.Model{}, 0, Name, []MenuEntry{}}
+	canteen := Canteen{gorm.Model{}, 0, Name, []MenuEntry{}, Location}
 
 	err := grantCanteenNameIsNotEmpty(Name)
 
