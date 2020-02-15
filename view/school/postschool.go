@@ -9,6 +9,12 @@ type CreateNewSchoolModelView struct {
 	Acronym  string `json:"acronym"`
 	Name     string `json:"name"`
 	Canteens []struct {
-		Name string `json:"name"`
+		Name     string             `json:"name"`
+		Location postLocationStruct `json:"location"`
 	} `json:"canteens"`
+}
+
+type postLocationStruct struct {
+	Latitude  float32 `json:"latitude"`
+	Longitude float32 `json:"longitude"`
 }
