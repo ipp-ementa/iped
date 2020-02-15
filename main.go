@@ -27,33 +27,33 @@ func main() {
 
 	// schools collection functionalities
 
-	ech.GET("/schools", school.AvailableSchools)
+	ech.GET("/api/schools", school.AvailableSchools)
 
-	ech.GET("/schools/:id", school.DetailedSchoolInformation)
+	ech.GET("/api/schools/:id", school.DetailedSchoolInformation)
 
-	ech.POST("/schools", school.CreateNewSchool)
+	ech.POST("/api/schools", school.CreateNewSchool)
 
 	// canteens collection functionalities
 
-	ech.GET("/schools/:id/canteens", canteen.AvailableCanteens)
+	ech.GET("/api/schools/:id/canteens", canteen.AvailableCanteens)
 
-	ech.GET("/schools/:id/canteens/:id2", canteen.DetailedCanteenInformation)
+	ech.GET("/api/schools/:id/canteens/:id2", canteen.DetailedCanteenInformation)
 
-	ech.POST("/schools/:id/canteens", canteen.CreateNewCanteen)
+	ech.POST("/api/schools/:id/canteens", canteen.CreateNewCanteen)
 
 	// menus collection functionalities
 
-	ech.GET("/schools/:id/canteens/:id2/menus", menu.AvailableMenus)
+	ech.GET("/api/schools/:id/canteens/:id2/menus", menu.AvailableMenus)
 
-	ech.GET("/schools/:id/canteens/:id2/menus/:id3", menu.DetailedMenuInformation)
+	ech.GET("/api/schools/:id/canteens/:id2/menus/:id3", menu.DetailedMenuInformation)
 
-	ech.POST("/schools/:id/canteens/:id2/menus", menu.CreateNewMenu)
+	ech.POST("/api/schools/:id/canteens/:id2/menus", menu.CreateNewMenu)
 
 	// dishes collection functionalities
 
-	ech.GET("/schools/:id/canteens/:id2/menus/:id3/dishes", dish.AvailableDishes)
+	ech.GET("/api/schools/:id/canteens/:id2/menus/:id3/dishes", dish.AvailableDishes)
 
-	ech.GET("/schools/:id/canteens/:id2/menus/:id3/dishes/:id4", dish.DetailedDishInformation)
+	ech.GET("/api/schools/:id/canteens/:id2/menus/:id3/dishes/:id4", dish.DetailedDishInformation)
 
 	port, perr := strconv.Atoi(os.Getenv("PORT"))
 
