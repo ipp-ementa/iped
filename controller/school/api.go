@@ -54,33 +54,51 @@ func AvailableSchools(c echo.Context) error {
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#detailed-school-information
 func DetailedSchoolInformation(c echo.Context) error {
 
-	// db, ok := c.Get("db").(*mongo.Database)
+	db, ok := c.Get("db").(*mongo.Database)
 
-	// if !ok {
-	// 	return c.NoContent(http.StatusInternalServerError)
-	// }
+	if !ok {
+		return c.NoContent(http.StatusInternalServerError)
+	}
 
-	// id, _ := strconv.Atoi(c.Param("id"))
+	id := c.Param("id")
 
-	// var school model.School
+	school := model.School{}
 
-	// // Finds school by ID
+	// Finds school by ID
 
-	// err := db.Find(&school, id).Error
+	collection := db.Collection("schools")
 
-	// if err != nil {
-	// 	return c.NoContent(http.StatusNotFound)
-	// }
+	oid, perr := primitive.ObjectIDFromHex(id)
 
-	// // Find school canteens
+	if perr != nil {
 
-	// db.Model(&school).Related(&school.CanteensSlice)
+		return c.NoContent(http.StatusNotFound)
 
-	// modelview := view.ToGetDetailedSchoolInformationModelView(school)
+	}
 
-	// return c.JSON(http.StatusOK, modelview)
+	filter := bson.M{"_id": oid}
 
-	return c.NoContent(200)
+	ctx, cancelFunction := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelFunction()
+
+	schoolResult := collection.FindOne(ctx, filter)
+
+	err := schoolResult.Err()
+
+	if err == mongo.ErrNoDocuments {
+
+		return c.NoContent(http.StatusNotFound)
+
+	}
+
+	schoolResult.Decode(&school)
+
+	school.ID = id
+
+	modelview := view.ToGetDetailedSchoolInformationModelView(school)
+
+	return c.JSON(http.StatusOK, modelview)
 
 }
 
