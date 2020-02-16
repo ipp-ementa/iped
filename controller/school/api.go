@@ -26,27 +26,43 @@ import (
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#available-schools
 func AvailableSchools(c echo.Context) error {
 
-	// db, ok := c.Get("db").(*mongo.Database)
+	db, ok := c.Get("db").(*mongo.Database)
 
-	// if !ok {
-	// 	return c.NoContent(http.StatusInternalServerError)
-	// }
+	if !ok {
+		return c.NoContent(http.StatusInternalServerError)
+	}
 
-	// schools := []model.School{}
+	schools := []model.School{}
 
-	// // Finds all available schools
+	collection := db.Collection("schools")
 
-	// err := db.Find(&schools).Error
+	ctx, cancelFunction := context.WithTimeout(context.Background(), 5*time.Second)
 
-	// if err != nil || len(schools) == 0 {
-	// 	return c.NoContent(http.StatusNotFound)
-	// }
+	defer cancelFunction()
 
-	// modelview := view.ToGetAvailableSchoolsModelView(schools)
+	filter := bson.M{}
 
-	// return c.JSON(http.StatusOK, modelview)
+	schoolsCursor, err := collection.Find(ctx, filter)
 
-	return c.NoContent(200)
+	if err == mongo.ErrNoDocuments {
+		return c.NoContent(http.StatusNotFound)
+	}
+
+	for schoolsCursor.Next(ctx) {
+
+		school := model.School{}
+
+		schoolsCursor.Decode(&school)
+
+		school.ID = schoolsCursor.Current.Lookup("_id").ObjectID().Hex()
+
+		schools = append(schools, school)
+
+	}
+
+	modelview := view.ToGetAvailableSchoolsModelView(schools)
+
+	return c.JSON(http.StatusOK, modelview)
 
 }
 
