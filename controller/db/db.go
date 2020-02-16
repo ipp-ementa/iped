@@ -29,7 +29,7 @@ func init() {
 	ctx, cancelFunction := context.WithTimeout(context.Background(), 10*time.Second)
 	err = client.Connect(ctx)
 
-	cancelFunction()
+	defer cancelFunction()
 
 	if err != nil {
 
