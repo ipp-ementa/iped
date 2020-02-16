@@ -12,7 +12,7 @@ import (
 // for the available schools functionality
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#available-schools
 type GetAvailableSchoolsModelView []struct {
-	ID      int    `json:"id"`
+	ID      string `json:"id"`
 	Acronym string `json:"acronym"`
 	Name    string `json:"name"`
 }
@@ -21,7 +21,7 @@ type GetAvailableSchoolsModelView []struct {
 // for the detailed school information functionality
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#detailed-school-information
 type GetDetailedSchoolInformationModelView struct {
-	ID       int                   `json:"id"`
+	ID       string                `json:"id"`
 	Acronym  string                `json:"acronym"`
 	Name     string                `json:"name"`
 	Canteens []innerCanteensStruct `json:"canteens"`
@@ -38,7 +38,7 @@ func ToGetAvailableSchoolsModelView(schools []school.School) GetAvailableSchools
 
 	for index, school := range schools {
 		element := &modelview[index]
-		element.ID = int(school.ID)
+		element.ID = school.ID
 		element.Acronym = strings.ToUpper(school.Acronym)
 		element.Name = school.Name
 	}
@@ -59,7 +59,7 @@ func ToGetDetailedSchoolInformationModelView(school school.School) GetDetailedSc
 		element.Name = canteen.Name
 	}
 
-	modelview := GetDetailedSchoolInformationModelView{ID: int(school.ID), Name: school.Name, Acronym: strings.ToUpper(school.Acronym), Canteens: modelviewCanteens}
+	modelview := GetDetailedSchoolInformationModelView{ID: school.ID, Name: school.Name, Acronym: strings.ToUpper(school.Acronym), Canteens: modelviewCanteens}
 
 	return modelview
 }
