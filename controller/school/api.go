@@ -54,8 +54,6 @@ func AvailableSchools(c echo.Context) error {
 
 		schoolsCursor.Decode(&school)
 
-		school.ID = schoolsCursor.Current.Lookup("_id").ObjectID().Hex()
-
 		schools = append(schools, school)
 
 	}
@@ -109,8 +107,6 @@ func DetailedSchoolInformation(c echo.Context) error {
 	}
 
 	schoolResult.Decode(&school)
-
-	school.ID = id
 
 	modelview := view.ToGetDetailedSchoolInformationModelView(school)
 
@@ -195,19 +191,13 @@ func CreateNewSchool(c echo.Context) error {
 
 	}
 
-	res, err := collection.InsertOne(ctx, document)
+	_, err = collection.InsertOne(ctx, document)
 
 	if err != nil {
 
 		return c.NoContent(http.StatusInternalServerError)
 
 	}
-
-	documentID := res.InsertedID.(primitive.ObjectID)
-
-	id := documentID.Hex()
-
-	school.ID = id
 
 	modelviewres := view.ToGetDetailedSchoolInformationModelView(school)
 

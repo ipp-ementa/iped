@@ -4,6 +4,8 @@ import (
 	"strings"
 	"unicode"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	"github.com/ipp-ementa/iped/model/canteen"
 	"github.com/ipp-ementa/iped/model/customerror"
 )
@@ -12,7 +14,7 @@ import (
 // A school has a unique acronym, a descriptive name and needs to offer at least one canteen
 // A UML overview of this model can be found at https://github.com/ipp-ementa/iped-documentation/wiki/Architecture#models-structure
 type School struct {
-	ID            string
+	ID            primitive.ObjectID `_id`
 	Acronym       string
 	Name          string
 	CanteensSlice []canteen.Canteen
@@ -23,7 +25,7 @@ type School struct {
 // name is empty, no canteens were provided or if it was found a duplicated canteen
 func New(Acronym string, Name string, Canteens []canteen.Canteen) (School, *customerror.FieldError) {
 
-	school := School{"", Acronym, Name, Canteens}
+	school := School{primitive.NewObjectID(), Acronym, Name, Canteens}
 
 	err := grantSchoolAcronymIsNotEmpty(Acronym)
 

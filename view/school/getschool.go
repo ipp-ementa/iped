@@ -38,7 +38,7 @@ func ToGetAvailableSchoolsModelView(schools []school.School) GetAvailableSchools
 
 	for index, school := range schools {
 		element := &modelview[index]
-		element.ID = school.ID
+		element.ID = school.ID.Hex()
 		element.Acronym = strings.ToUpper(school.Acronym)
 		element.Name = school.Name
 	}
@@ -59,7 +59,7 @@ func ToGetDetailedSchoolInformationModelView(school school.School) GetDetailedSc
 		element.Name = canteen.Name
 	}
 
-	modelview := GetDetailedSchoolInformationModelView{ID: school.ID, Name: school.Name, Acronym: strings.ToUpper(school.Acronym), Canteens: modelviewCanteens}
+	modelview := GetDetailedSchoolInformationModelView{ID: school.ID.Hex(), Name: school.Name, Acronym: strings.ToUpper(school.Acronym), Canteens: modelviewCanteens}
 
 	return modelview
 }
