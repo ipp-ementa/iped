@@ -1,10 +1,15 @@
 package school
 
 import (
+	"context"
 	"net/http"
-	"strconv"
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/ipp-ementa/iped/model/geographicallocation"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 
 	customerrormodel "github.com/ipp-ementa/iped/model/customerror"
 	customerrorview "github.com/ipp-ementa/iped/view/customerror"
@@ -14,7 +19,6 @@ import (
 	model "github.com/ipp-ementa/iped/model/school"
 	view "github.com/ipp-ementa/iped/view/school"
 
-	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo"
 )
 
@@ -22,25 +26,27 @@ import (
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#available-schools
 func AvailableSchools(c echo.Context) error {
 
-	db, ok := c.Get("db").(*gorm.DB)
+	// db, ok := c.Get("db").(*mongo.Database)
 
-	if !ok {
-		return c.NoContent(http.StatusInternalServerError)
-	}
+	// if !ok {
+	// 	return c.NoContent(http.StatusInternalServerError)
+	// }
 
-	schools := []model.School{}
+	// schools := []model.School{}
 
-	// Finds all available schools
+	// // Finds all available schools
 
-	err := db.Find(&schools).Error
+	// err := db.Find(&schools).Error
 
-	if err != nil || len(schools) == 0 {
-		return c.NoContent(http.StatusNotFound)
-	}
+	// if err != nil || len(schools) == 0 {
+	// 	return c.NoContent(http.StatusNotFound)
+	// }
 
-	modelview := view.ToGetAvailableSchoolsModelView(schools)
+	// modelview := view.ToGetAvailableSchoolsModelView(schools)
 
-	return c.JSON(http.StatusOK, modelview)
+	// return c.JSON(http.StatusOK, modelview)
+
+	return c.NoContent(200)
 
 }
 
@@ -48,31 +54,33 @@ func AvailableSchools(c echo.Context) error {
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#detailed-school-information
 func DetailedSchoolInformation(c echo.Context) error {
 
-	db, ok := c.Get("db").(*gorm.DB)
+	// db, ok := c.Get("db").(*mongo.Database)
 
-	if !ok {
-		return c.NoContent(http.StatusInternalServerError)
-	}
+	// if !ok {
+	// 	return c.NoContent(http.StatusInternalServerError)
+	// }
 
-	id, _ := strconv.Atoi(c.Param("id"))
+	// id, _ := strconv.Atoi(c.Param("id"))
 
-	var school model.School
+	// var school model.School
 
-	// Finds school by ID
+	// // Finds school by ID
 
-	err := db.Find(&school, id).Error
+	// err := db.Find(&school, id).Error
 
-	if err != nil {
-		return c.NoContent(http.StatusNotFound)
-	}
+	// if err != nil {
+	// 	return c.NoContent(http.StatusNotFound)
+	// }
 
-	// Find school canteens
+	// // Find school canteens
 
-	db.Model(&school).Related(&school.CanteensSlice)
+	// db.Model(&school).Related(&school.CanteensSlice)
 
-	modelview := view.ToGetDetailedSchoolInformationModelView(school)
+	// modelview := view.ToGetDetailedSchoolInformationModelView(school)
 
-	return c.JSON(http.StatusOK, modelview)
+	// return c.JSON(http.StatusOK, modelview)
+
+	return c.NoContent(200)
 
 }
 
@@ -80,7 +88,7 @@ func DetailedSchoolInformation(c echo.Context) error {
 // See more info at: https://github.com/ipp-ementa/iped-documentation/blob/master/documentation/rest_api/schools.md#create-a-new-school
 func CreateNewSchool(c echo.Context) error {
 
-	db, ok := c.Get("db").(*gorm.DB)
+	db, ok := c.Get("db").(*mongo.Database)
 
 	if !ok {
 		return c.NoContent(http.StatusInternalServerError)
@@ -123,23 +131,49 @@ func CreateNewSchool(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, modelview)
 	}
 
-	var existingSchool model.School
-
 	// Finds if school with same acronym already exists
 
-	err := db.Where(map[string]interface{}{"acronym": modelview.Acronym}).First(&existingSchool).Error
+	collection := db.Collection("schools")
 
-	if err == nil {
+	filter := bson.M{"acronym": school.Acronym}
+
+	ctx, cancelFunction := context.WithTimeout(context.Background(), 5*time.Second)
+
+	defer cancelFunction()
+
+	err := collection.FindOne(ctx, filter).Err()
+
+	if err != mongo.ErrNoDocuments {
 
 		cerr := customerrormodel.FieldError{Field: "acronym", Model: "school", Explanation: "a school with the same acronym already exists"}
 
 		modelview := customerrorview.UsingFieldErrorToErrorMessageModelView(cerr)
 
 		return c.JSON(http.StatusBadRequest, modelview)
+
 	}
 
-	// Creates school
-	db.Create(&school)
+	document, err := bson.Marshal(school)
+
+	if err != nil {
+
+		return c.NoContent(http.StatusInternalServerError)
+
+	}
+
+	res, err := collection.InsertOne(ctx, document)
+
+	if err != nil {
+
+		return c.NoContent(http.StatusInternalServerError)
+
+	}
+
+	documentID := res.InsertedID.(primitive.ObjectID)
+
+	id := documentID.Hex()
+
+	school.ID = id
 
 	modelviewres := view.ToGetDetailedSchoolInformationModelView(school)
 
