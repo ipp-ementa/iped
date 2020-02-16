@@ -1,45 +1,44 @@
 package db
 
 import (
-	"fmt"
+	"context"
 	"os"
+	"time"
 
-	"github.com/ipp-ementa/iped/model/canteen"
-	"github.com/ipp-ementa/iped/model/dish"
-	"github.com/ipp-ementa/iped/model/menu"
-	"github.com/ipp-ementa/iped/model/school"
-
-	"github.com/jinzhu/gorm"
-	// Requires to import sqlite dialect package to use and open sqlite3 database
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Db holds the state of the database connection
-var Db *gorm.DB
+var Db *mongo.Database
 
 // Initializes database once go program starts or package is imported
-// Panics if database couldn't be open
+// Panics if database couldn't be open and created
 func init() {
 
 	conn := os.Getenv("IPEW_CONNECTION_STRING")
 
-	odb, err := gorm.Open("sqlite3", conn)
+	client, err := mongo.NewClient(options.Client().ApplyURI(conn))
 
 	if err != nil {
-		panic(fmt.Sprintf("Database '%s' couldn't be open due to: %s", conn, err))
+
+		panic("Could not create MongoDB client")
+
 	}
 
-	odb.Exec("PRAGMA foreign_keys = ON")
+	ctx, cancelFunction := context.WithTimeout(context.Background(), 10*time.Second)
+	err = client.Connect(ctx)
 
-	odb.AutoMigrate(&school.School{})
+	cancelFunction()
 
-	odb.AutoMigrate(&canteen.Canteen{})
+	if err != nil {
 
-	odb.AutoMigrate(&canteen.MenuEntry{})
+		panic("Could not connect to MongoDB server")
 
-	odb.AutoMigrate(&menu.Menu{})
+	}
 
-	odb.AutoMigrate(&dish.Dish{})
+	database := client.Database("ipew")
 
-	Db = odb
+	Db = database
+
 }
