@@ -34,4 +34,4 @@ class School {
   }
 }
 
-export { Canteen };
+export { School };
