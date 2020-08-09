@@ -9,7 +9,7 @@ class School {
 
   name: NonEmptyString;
 
-  constructor(
+  private constructor(
     acronym: NonEmptyString,
     canteens: Canteen[],
     name: NonEmptyString,
@@ -19,7 +19,19 @@ class School {
     this.name = name;
   }
 
-  static create(
+  public addCanteen(canteen: Canteen): Result<void, string> {
+    const canteensCopy = this.canteens.slice();
+    canteensCopy.push(canteen);
+
+    if (HasDuplicates<Canteen>(canteensCopy)) {
+      return Err("cannot add duplicate canteen");
+    } else {
+      this.canteens.push(canteen);
+      return Ok(undefined);
+    }
+  }
+
+  public static create(
     acronym: NonEmptyString,
     canteens: Canteen[],
     name: NonEmptyString,
