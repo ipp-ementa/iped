@@ -1,11 +1,11 @@
-import { Err, Ok, Result } from "../deps.ts";
+import { Err, Ok, Option, Result } from "../deps.ts";
 
 class NonEmptyString extends String {
-  constructor(value: string) {
+  public constructor(value: string) {
     super(value);
   }
 
-  static create(value: string): Result<NonEmptyString, string> {
+  public static create(value: string): Result<NonEmptyString, string> {
     if (value?.trim().length > 0) {
       return Ok(new NonEmptyString(value));
     } else {
@@ -18,4 +18,4 @@ function HasDuplicates<T>(array: T[]) {
   return array.filter((e, i, a) => a.indexOf(e) !== i).length != 0;
 }
 
-export { HasDuplicates, Err, NonEmptyString, Ok, Result };
+export { HasDuplicates, Err, NonEmptyString, Ok, Option, Result };

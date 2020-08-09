@@ -5,7 +5,7 @@ class Dish {
 
   type: DishType;
 
-  constructor(description: NonEmptyString, type: DishType) {
+  private constructor(description: NonEmptyString, type: DishType) {
     this.description = description;
     this.type = type;
   }

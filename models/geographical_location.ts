@@ -5,13 +5,13 @@ class GeographicalLocation {
 
   longitude: number;
 
-  constructor(latitude: number, longitude: number) {
+  private constructor(latitude: number, longitude: number) {
     this.latitude = latitude;
 
     this.longitude = longitude;
   }
 
-  static create(
+  public static create(
     latitude: number,
     longitude: number,
   ): Result<GeographicalLocation, string> {

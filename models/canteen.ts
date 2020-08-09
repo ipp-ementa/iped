@@ -6,9 +6,13 @@ class Canteen {
 
   name: NonEmptyString;
 
-  constructor(location: GeographicalLocation, name: string) {
+  private constructor(location: GeographicalLocation, name: NonEmptyString) {
     this.location = location;
     this.name = name;
+  }
+
+  public static create(location: GeographicalLocation, name: NonEmptyString) {
+    return new Canteen(location, name);
   }
 }
 

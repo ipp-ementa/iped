@@ -6,12 +6,12 @@ class Menu {
 
   type: MenuType;
 
-  constructor(dishes: Dish[], type: MenuType) {
+  private constructor(dishes: Dish[], type: MenuType) {
     this.dishes = dishes;
     this.type = type;
   }
 
-  static create(dishes: Dish[], type: MenuType): Result<Menu, string> {
+  public static create(dishes: Dish[], type: MenuType): Result<Menu, string> {
     if (dishes.length == 0) {
       return Err("must provide at least one dish");
     } else if (HasDuplicates<Dish>(dishes)) {
