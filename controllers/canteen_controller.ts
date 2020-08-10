@@ -75,9 +75,7 @@ export async function createCanteen(
 
     if (firstError) {
       return Err(
-        <BadRequest> ({
-          message: firstError.unwrapErr(),
-        }),
+        new BadRequest(firstError.unwrapErr()),
       );
     } else {
       const canteen = Canteen.create(
@@ -89,15 +87,15 @@ export async function createCanteen(
 
       if (addCanteenResult.isErr()) {
         return Err(
-          <BadRequest> ({
-            message: addCanteenResult.unwrapErr(),
-          }),
+          new BadRequest(
+            addCanteenResult.unwrapErr(),
+          ),
         );
       } else {
         const schoolUpdateResult = await schoolRepository.update(school);
 
         if (schoolUpdateResult.isErr()) {
-          return Err(<InternalServerError> {});
+          return Err(new InternalServerError());
         } else {
           const updatedSchool = schoolUpdateResult.unwrap();
 
@@ -156,12 +154,12 @@ export async function queryCanteenById(
   } else {
     const school = schoolResult.unwrap();
 
-    const canteen = school.canteens.find((c) => c);
+    const canteen = school.canteens.find((c) => c.name == canteenId);
 
     if (canteen) {
       return Ok(canteen);
     } else {
-      return Err(<NotFound> {});
+      return Err(new NotFound());
     }
   }
 }

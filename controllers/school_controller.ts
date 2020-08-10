@@ -239,20 +239,19 @@ export class MongoSchoolRepository implements SchoolRepository {
   }
   async school(query: SchoolQuery): Promise<Result<Option<School>, Error>> {
     try {
-
       let result;
 
       if (query.id && ValidObjectId(query.id)) {
         result = await this.collection.findOne({
           _id: {
-            $oid: query.id
-          }
+            $oid: query.id,
+          },
         });
-      } else if(query.acronym) {
+      } else if (query.acronym) {
         result = await this.collection.findOne({
           acronym: {
-            $eq: query.acronym
-          }
+            $eq: query.acronym,
+          },
         });
       }
 
@@ -279,7 +278,7 @@ export class MongoSchoolRepository implements SchoolRepository {
       });
 
       if (result.modifiedCount > 0) {
-        return Ok(School.fromJson(result));
+        return Ok(School.fromJson(school));
       } else {
         return Err(new InternalServerError());
       }
