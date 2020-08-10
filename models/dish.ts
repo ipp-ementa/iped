@@ -1,6 +1,6 @@
-import { NonEmptyString } from "./common.ts";
+import { NonEmptyString, Equatable } from "./common.ts";
 
-class Dish {
+class Dish implements Equatable {
   description: NonEmptyString;
 
   type: DishType;
@@ -8,6 +8,10 @@ class Dish {
   private constructor(description: NonEmptyString, type: DishType) {
     this.description = description;
     this.type = type;
+  }
+
+  equals(obj: any): boolean {
+    return obj && obj.description === this.description;
   }
 }
 
