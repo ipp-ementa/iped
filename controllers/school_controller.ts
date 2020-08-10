@@ -25,7 +25,7 @@ import {
   None,
 } from "../models/models.ts";
 
-import { Collection } from "../deps.ts";
+import { Collection, QuerySelector } from "../deps.ts";
 
 export async function availableSchools(
   repository: SchoolRepository,
@@ -37,11 +37,11 @@ export async function availableSchools(
 
     if (schools.length > 0) {
       const availableSchoolsView = schools.map<AvailableSchoolsItem>(
-        function (s, i, a): AvailableSchoolsItem {
+        function (s): AvailableSchoolsItem {
           return {
-            id: s._id.$oid,
-            acronym: s.acronym.valueOf(),
-            name: s.name.valueOf(),
+            id: s.id,
+            acronym: s.acronym,
+            name: s.name,
           };
         },
       );
@@ -58,11 +58,11 @@ export async function createSchool(
   repository: SchoolRepository,
   schoolToCreate: CreateSchool,
 ): Promise<Result<CreatedSchool, Error>> {
-  const schoolFoundByName = await repository.school(
-    { name: schoolToCreate.name },
+  const schoolFoundByAcronym = await repository.school(
+    { acronym: schoolToCreate.acronym },
   );
 
-  if (schoolFoundByName.isErr()) {
+  if (schoolFoundByAcronym.isOk() && schoolFoundByAcronym.unwrap().isNone()) {
     const acronym = NonEmptyString.create(schoolToCreate.acronym);
 
     const name = NonEmptyString.create(schoolToCreate.name);
@@ -123,17 +123,17 @@ export async function createSchool(
         const createdCanteens = unwrapSchool.canteens.map(
           function (c): CreatedCanteen {
             return {
-              id: c.name.valueOf(),
+              id: c.name,
               location: c.location,
-              name: c.name.valueOf(),
+              name: c.name,
             };
           },
         );
         return Ok(
           <CreatedSchool> {
-            id: unwrapSchool._id.$oid,
-            acronym: unwrapSchool.acronym.valueOf(),
-            name: unwrapSchool.name.valueOf(),
+            id: unwrapSchool.id,
+            acronym: unwrapSchool.acronym,
+            name: unwrapSchool.name,
             canteens: createdCanteens,
           },
         );
@@ -160,19 +160,19 @@ export async function detailedSchoolInformation(
     const schoolCanteensAsCreatedCanteens = school.canteens.map(
       function (c): CreatedCanteen {
         return {
-          id: c.name.valueOf(),
+          id: c.name,
           location: c.location,
-          name: c.name.valueOf(),
+          name: c.name,
         };
       },
     );
 
     return Ok(
       <DetailedSchoolInformation> {
-        id: school._id.$oid,
-        acronym: school.acronym.valueOf(),
+        id: school.id,
+        acronym: school.acronym,
         canteens: schoolCanteensAsCreatedCanteens,
-        name: school.name.valueOf(),
+        name: school.name,
       },
     );
   }
@@ -239,14 +239,18 @@ export class MongoSchoolRepository implements SchoolRepository {
   async school(query: SchoolQuery): Promise<Result<Option<School>, Error>> {
     try {
       const mongoQuery = {
-        _id: <ObjectId> {},
-        name: <String> {},
+        _id: <QuerySelector<ObjectId>> {},
+        acronym: {
+          $eq: query.acronym,
+        },
       };
 
       if (query.id) {
-        mongoQuery._id = ObjectId(query.id);
-      } else if (query.name) {
-        mongoQuery.name = query.name;
+        mongoQuery._id = {
+          $eq: ObjectId(query.id),
+        };
+      } else {
+        delete mongoQuery._id;
       }
 
       const result = await this.collection.findOne(mongoQuery);
@@ -286,5 +290,5 @@ export class MongoSchoolRepository implements SchoolRepository {
 
 export interface SchoolQuery {
   id?: string;
-  name?: string;
+  acronym?: string;
 }
