@@ -25,8 +25,9 @@ class School {
     acronym: NonEmptyString,
     canteens: Canteen[],
     name: NonEmptyString,
+    id?: { $oid: string }
   ) {
-    this._id = undefined;
+    this._id = id;
     this.acronym = acronym.valueOf();
     this.canteens = canteens;
     this.name = name.valueOf();
@@ -56,6 +57,10 @@ class School {
     } else {
       return Ok(new School(acronym, canteens, name));
     }
+  }
+
+  public static fromJson(object: any): School {
+    return new School(object.acronym, object.canteens, object.name, object._id);
   }
 }
 

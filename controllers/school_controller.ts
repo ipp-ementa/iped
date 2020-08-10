@@ -221,7 +221,7 @@ export class MongoSchoolRepository implements SchoolRepository {
 
       school._id = result;
 
-      return Ok(school);
+      return Ok(School.fromJson(result));
     } catch (error) {
       return Err(new InternalServerError());
     }
@@ -231,7 +231,7 @@ export class MongoSchoolRepository implements SchoolRepository {
     try {
       const result = await this.collection.find({ name: { $ne: null } });
 
-      return Ok(result);
+      return Ok(result.map<School>((s) => School.fromJson(s)));
     } catch (error) {
       return Err(new InternalServerError());
     }
@@ -256,7 +256,7 @@ export class MongoSchoolRepository implements SchoolRepository {
       const result = await this.collection.findOne(mongoQuery);
 
       if (result) {
-        return Ok(Some(result));
+        return Ok(Some(School.fromJson(result)));
       } else {
         return Ok(None);
       }
@@ -278,7 +278,7 @@ export class MongoSchoolRepository implements SchoolRepository {
       });
 
       if (result.modifiedCount > 0) {
-        return Ok(result);
+        return Ok(School.fromJson(result));
       } else {
         return Err(new InternalServerError());
       }
