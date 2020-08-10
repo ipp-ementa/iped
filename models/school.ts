@@ -1,22 +1,35 @@
 import { Canteen } from "./canteen.ts";
 
-import { HasDuplicates, Err, NonEmptyString, Ok, Result } from "./common.ts";
+import {
+  HasDuplicates,
+  Err,
+  NonEmptyString,
+  Ok,
+  Result,
+} from "./common.ts";
 
 class School {
-  acronym: NonEmptyString;
+  public get id(): string {
+    return this._id?.$oid || "undefined";
+  }
+
+  _id?: { $oid: string };
+
+  acronym: string;
 
   canteens: Canteen[];
 
-  name: NonEmptyString;
+  name: string;
 
   private constructor(
     acronym: NonEmptyString,
     canteens: Canteen[],
     name: NonEmptyString,
   ) {
-    this.acronym = acronym;
+    this._id = undefined;
+    this.acronym = acronym.valueOf();
     this.canteens = canteens;
-    this.name = name;
+    this.name = name.valueOf();
   }
 
   public addCanteen(canteen: Canteen): Result<void, string> {

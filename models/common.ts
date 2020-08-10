@@ -1,4 +1,4 @@
-import { Err, Ok, Option, Result } from "../deps.ts";
+import { Err, None, ObjectId, Ok, Option, Result, Some } from "../deps.ts";
 
 class NonEmptyString extends String {
   public constructor(value: string) {
@@ -18,4 +18,14 @@ function HasDuplicates<T>(array: T[]) {
   return array.filter((e, i, a) => a.indexOf(e) !== i).length != 0;
 }
 
-export { HasDuplicates, Err, NonEmptyString, Ok, Option, Result };
+export {
+  HasDuplicates,
+  Err,
+  None,
+  NonEmptyString,
+  ObjectId,
+  Ok,
+  Option,
+  Result,
+  Some,
+};

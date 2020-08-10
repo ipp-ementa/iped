@@ -4,11 +4,11 @@ import { NonEmptyString } from "./common.ts";
 class Canteen {
   location: GeographicalLocation;
 
-  name: NonEmptyString;
+  name: string;
 
   private constructor(location: GeographicalLocation, name: NonEmptyString) {
     this.location = location;
-    this.name = name;
+    this.name = name.valueOf();
   }
 
   public static create(location: GeographicalLocation, name: NonEmptyString) {
