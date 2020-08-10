@@ -1,4 +1,4 @@
-interface AvailableSchoolsItem {
+export interface AvailableSchoolsItem {
   id: string;
   acronym: string;
   name: string;

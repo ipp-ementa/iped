@@ -1,5 +1,5 @@
-interface AvailableCanteensItem {
-  id: number;
+export interface AvailableCanteensItem {
+  id: string;
   name: string;
 }
 
