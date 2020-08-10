@@ -60,7 +60,12 @@ class School {
   }
 
   public static fromJson(object: any): School {
-    return new School(object.acronym, object.canteens, object.name, object._id);
+    return new School(
+      object.acronym,
+      object.canteens.map((c: Canteen) => Canteen.fromJson(c)),
+      object.name,
+      object._id,
+    );
   }
 }
 
