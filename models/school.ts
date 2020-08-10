@@ -22,15 +22,15 @@ class School {
   name: string;
 
   private constructor(
-    acronym: NonEmptyString,
+    acronym: string,
     canteens: Canteen[],
-    name: NonEmptyString,
-    id?: { $oid: string }
+    name: string,
+    id?: { $oid: string },
   ) {
     this._id = id;
-    this.acronym = acronym.valueOf();
+    this.acronym = acronym;
     this.canteens = canteens;
-    this.name = name.valueOf();
+    this.name = name;
   }
 
   public addCanteen(canteen: Canteen): Result<void, string> {
@@ -55,7 +55,7 @@ class School {
     } else if (HasDuplicates<Canteen>(canteens)) {
       return Err("cannot have duplicate canteen");
     } else {
-      return Ok(new School(acronym, canteens, name));
+      return Ok(new School(acronym.valueOf(), canteens, name.valueOf()));
     }
   }
 

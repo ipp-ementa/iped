@@ -20,9 +20,9 @@ import {
   NonEmptyString,
   Canteen,
   GeographicalLocation,
-  ObjectId,
   Some,
   None,
+  ValidObjectId,
 } from "../models/models.ts";
 
 import { Collection, QuerySelector } from "../deps.ts";
@@ -129,6 +129,7 @@ export async function createSchool(
             };
           },
         );
+
         return Ok(
           <CreatedSchool> {
             id: unwrapSchool.id,
@@ -221,7 +222,7 @@ export class MongoSchoolRepository implements SchoolRepository {
 
       school._id = result;
 
-      return Ok(School.fromJson(result));
+      return Ok(School.fromJson(school));
     } catch (error) {
       return Err(new InternalServerError());
     }
@@ -238,22 +239,22 @@ export class MongoSchoolRepository implements SchoolRepository {
   }
   async school(query: SchoolQuery): Promise<Result<Option<School>, Error>> {
     try {
-      const mongoQuery = {
-        _id: <QuerySelector<ObjectId>> {},
-        acronym: {
-          $eq: query.acronym,
-        },
-      };
 
-      if (query.id) {
-        mongoQuery._id = {
-          $eq: ObjectId(query.id),
-        };
-      } else {
-        delete mongoQuery._id;
+      let result;
+
+      if (query.id && ValidObjectId(query.id)) {
+        result = await this.collection.findOne({
+          _id: {
+            $oid: query.id
+          }
+        });
+      } else if(query.acronym) {
+        result = await this.collection.findOne({
+          acronym: {
+            $eq: query.acronym
+          }
+        });
       }
-
-      const result = await this.collection.findOne(mongoQuery);
 
       if (result) {
         return Ok(Some(School.fromJson(result)));

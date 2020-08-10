@@ -18,6 +18,10 @@ function HasDuplicates<T>(array: T[]) {
   return array.filter((e, i, a) => a.indexOf(e) !== i).length != 0;
 }
 
+function ValidObjectId(oid: string): boolean {
+  return /^[0-9a-fA-F]{24}$/.test(oid);
+}
+
 export {
   HasDuplicates,
   Err,
@@ -28,4 +32,5 @@ export {
   Option,
   Result,
   Some,
+  ValidObjectId,
 };
