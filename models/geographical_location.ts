@@ -1,6 +1,6 @@
-import { Err, Ok, Result } from "./common.ts";
+import { Err, Ok, Result, Equatable } from "./common.ts";
 
-class GeographicalLocation {
+class GeographicalLocation implements Equatable {
   latitude: number;
 
   longitude: number;
@@ -9,6 +9,11 @@ class GeographicalLocation {
     this.latitude = latitude;
 
     this.longitude = longitude;
+  }
+
+  equals(obj: any): boolean {
+    return obj && obj.latitude === this.latitude &&
+      obj.longitude === this.longitude;
   }
 
   public static create(
@@ -22,6 +27,10 @@ class GeographicalLocation {
     } else {
       return Ok(new GeographicalLocation(latitude, longitude));
     }
+  }
+
+  public static fromJson(object: any): GeographicalLocation {
+    return new GeographicalLocation(object.latitude, object.longitude);
   }
 }
 
