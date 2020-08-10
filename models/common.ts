@@ -14,8 +14,24 @@ class NonEmptyString extends String {
   }
 }
 
-function HasDuplicates<T>(array: T[]) {
-  return array.filter((e, i, a) => a.indexOf(e) !== i).length != 0;
+interface Equatable {
+  equals(obj: any): boolean;
+}
+
+function HasDuplicates<T extends Equatable>(array: T[]) {
+  if (array.length < 2) {
+    return false;
+  }
+
+  for (let i = 0; i < array.length; i++) {
+    for (let j = i + 1; j < array.length; j++) {
+      if (array[i].equals(array[j])) {
+        return true;
+      }
+    }
+  }
+
+  return false;
 }
 
 function ValidObjectId(oid: string): boolean {
@@ -24,6 +40,7 @@ function ValidObjectId(oid: string): boolean {
 
 export {
   HasDuplicates,
+  Equatable,
   Err,
   None,
   NonEmptyString,
