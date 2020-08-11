@@ -231,8 +231,4 @@ app.use(router.routes());
 
 app.use(router.allowedMethods());
 
-app.use((ctx) => {
-  ctx.response.body = "Hello world!";
-});
-
 await app.listen(`127.0.0.1:${Deno.env.get("PORT")}`);
