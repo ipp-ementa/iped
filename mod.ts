@@ -10,6 +10,11 @@ import {
   availableCanteens,
   createCanteen,
   detailedCanteenInformation,
+  availableDishes,
+  detailedDishInformation,
+  availableMenus,
+  createMenu,
+  detailedMenuInformation,
 } from "./controllers/controllers.ts";
 
 import { School } from "./models/models.ts";
@@ -132,6 +137,93 @@ router.get("/schools/:id1/canteens/:id2", async (ctx) => {
   respond(ctx, view, 200);
 });
 
+router.get("/schools/:id1/canteens/:id2/menus", async (ctx) => {
+  const schoolId = ctx.params.id1 || "undefined";
+
+  const canteenId = ctx.params.id2 || "undefined";
+
+  const view = await availableMenus(
+    schoolRepository,
+    schoolId,
+    canteenId,
+  );
+
+  respond(ctx, view, 200);
+});
+
+router.post("/schools/:id1/canteens/:id2/menus", async (ctx) => {
+  const schoolId = ctx.params.id1 || "undefined";
+
+  const canteenId = ctx.params.id2 || "undefined";
+
+  const menuToCreate = await ctx.request.body().value;
+
+  const view = await createMenu(
+    schoolRepository,
+    schoolId,
+    canteenId,
+    menuToCreate,
+  );
+
+  respond(ctx, view, 200);
+});
+
+router.get("/schools/:id1/canteens/:id2/menus/:id3", async (ctx) => {
+  const schoolId = ctx.params.id1 || "undefined";
+
+  const canteenId = ctx.params.id2 || "undefined";
+
+  const menuId = ctx.params.id3 || "undefined";
+
+  const view = await detailedMenuInformation(
+    schoolRepository,
+    schoolId,
+    canteenId,
+    menuId,
+  );
+
+  respond(ctx, view, 200);
+});
+
+router.get("/schools/:id1/canteens/:id2/menus/:id3/dishes", async (ctx) => {
+  const schoolId = ctx.params.id1 || "undefined";
+
+  const canteenId = ctx.params.id2 || "undefined";
+
+  const menuId = ctx.params.id3 || "undefined";
+
+  const view = await availableDishes(
+    schoolRepository,
+    schoolId,
+    canteenId,
+    menuId,
+  );
+
+  respond(ctx, view, 200);
+});
+
+router.get(
+  "/schools/:id1/canteens/:id2/menus/:id3/dishes/:id4",
+  async (ctx) => {
+    const schoolId = ctx.params.id1 || "undefined";
+
+    const canteenId = ctx.params.id2 || "undefined";
+
+    const menuId = ctx.params.id3 || "undefined";
+
+    const dishId = ctx.params.id4 || "undefined";
+
+    const view = await detailedDishInformation(
+      schoolRepository,
+      schoolId,
+      canteenId,
+      menuId,
+      dishId,
+    );
+
+    respond(ctx, view, 200);
+  },
+);
 
 const app = new Application();
 
