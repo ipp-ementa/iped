@@ -57,7 +57,7 @@ function respondWithError(
 const client = new MongoClient();
 
 client.connectWithUri(
-  "",
+  Deno.env.get("MONGO_DB_CONNECTION_STRING") || "undefined",
 );
 
 const db = client.database("ipp-ementa");
@@ -235,4 +235,4 @@ app.use((ctx) => {
   ctx.response.body = "Hello world!";
 });
 
-await app.listen("127.0.0.1:8000");
+await app.listen(`127.0.0.1:${Deno.env.get("PORT")}`);
