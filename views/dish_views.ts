@@ -1,4 +1,4 @@
-interface AvailableDishesItem {
+export interface AvailableDishesItem {
   id: string;
   type: string;
   description: string;
@@ -7,7 +7,7 @@ interface AvailableDishesItem {
 export interface AvailableDishes extends Array<AvailableDishesItem> {}
 
 export interface DetailedDishInformation {
-  id: number;
+  id: string;
   type: string;
   description: string;
 }
