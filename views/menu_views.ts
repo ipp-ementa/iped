@@ -1,4 +1,4 @@
-interface AvailableMenusItem {
+export interface AvailableMenusItem {
   id: string;
   type: string;
 }
@@ -8,7 +8,7 @@ interface Dish {
   description: string;
 }
 
-interface CreatedDish {
+export interface CreatedDish {
   id: string;
   type: string;
   description: string;
@@ -24,11 +24,11 @@ export interface CreateMenu {
 export interface CreatedMenu {
   id: string;
   type: string;
-  dishes: Dish[];
+  dishes: CreatedDish[];
 }
 
 export interface DetailedMenuInformation {
   id: string;
   type: string;
-  dishes: Dish[];
+  dishes: CreatedDish[];
 }
