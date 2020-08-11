@@ -1,6 +1,5 @@
 import {
   SchoolRepository,
-  querySchoolById,
 } from "./school_controller.ts";
 
 import {
@@ -8,15 +7,11 @@ import {
 } from "./canteen_controller.ts";
 
 import {
-  AvailableCanteens,
   Error,
-  InternalServerError,
+
   NotFound,
-  AvailableCanteensItem,
-  CreatedCanteen,
-  CreateCanteen,
+
   BadRequest,
-  DetailedCanteenInformation,
   AvailableMenus,
   AvailableMenusItem,
   CreateMenu,
@@ -30,7 +25,6 @@ import {
   Ok,
   Result,
   Canteen,
-  GeographicalLocation,
   NonEmptyString,
   MenuType,
   Menu,
@@ -134,23 +128,29 @@ export async function createMenu(
 
         canteen.addMenu(menu);
 
-        const updateResult = await schoolRepository.update(school);
+        const localCanteenUpdateResult = school.updateCanteen(canteen);
 
-        if (updateResult.isErr()) {
-          return Err(updateResult.err());
+        if (localCanteenUpdateResult.isErr()) {
+          return Err(new BadRequest(localCanteenUpdateResult.unwrapErr()));
         } else {
-          const createdMenuView = <CreatedMenu> {
-            id: menu.id,
-            type: MenuType[menu.type],
-            dishes: menu.dishes.map(function (d): CreatedDish {
-              return {
-                id: d.description,
-                description: d.description,
-                type: DishType[d.type],
-              };
-            }),
-          };
-          return Ok(createdMenuView);
+          const updateResult = await schoolRepository.update(school);
+
+          if (updateResult.isErr()) {
+            return Err(updateResult.unwrapErr());
+          } else {
+            const createdMenuView = <CreatedMenu> {
+              id: menu.id,
+              type: MenuType[menu.type],
+              dishes: menu.dishes.map(function (d): CreatedDish {
+                return {
+                  id: d.description,
+                  description: d.description,
+                  type: DishType[d.type],
+                };
+              }),
+            };
+            return Ok(createdMenuView);
+          }
         }
       }
     }

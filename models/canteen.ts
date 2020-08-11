@@ -15,12 +15,12 @@ class Canteen implements Equatable {
 
   name: string;
 
-  menusMap: Map<Date, Menu[]>;
+  menusMap: Map<string, Menu[]>;
 
   private constructor(
     location: GeographicalLocation,
     name: NonEmptyString,
-    menusMap: Map<Date, Menu[]>,
+    menusMap: Map<string, Menu[]>,
   ) {
     this.location = location;
     this.name = name.valueOf();
@@ -28,10 +28,12 @@ class Canteen implements Equatable {
   }
 
   todayMenus(): Option<Menu[]> {
+    const menusObject = Object.fromEntries(this.menusMap);
+
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
 
-    const menus = this.menusMap.get(todayDate);
+    const menus = menusObject[todayDate.toString()];
 
     if (menus) {
       return Some(menus);
@@ -44,7 +46,7 @@ class Canteen implements Equatable {
     const todayDate = new Date();
     todayDate.setHours(0, 0, 0, 0);
 
-    let menus = this.menusMap.get(todayDate);
+    let menus = this.menusMap.get(todayDate.toString());
 
     if (!menus) {
       menus = [];
@@ -52,7 +54,7 @@ class Canteen implements Equatable {
 
     menus.push(menu);
 
-    this.menusMap.set(todayDate, menus);
+    this.menusMap.set(todayDate.toString(), menus);
   }
 
   equals(obj: any): boolean {
@@ -62,25 +64,14 @@ class Canteen implements Equatable {
   }
 
   public static create(location: GeographicalLocation, name: NonEmptyString) {
-    return new Canteen(location, name, new Map<Date, Menu[]>());
+    return new Canteen(location, name, new Map<string, Menu[]>());
   }
 
   public static fromJson(object: any): Canteen {
-    const localMenusMap = new Map<Date, Menu[]>();
-
-    const objectMenusMap = Object.assign(
-      new Map<Date, Menu[]>(),
-      object.menusMap,
-    );
-
-    objectMenusMap.forEach((menus: Menu[], date: Date) =>
-      localMenusMap.set(date, menus.map((m) => Menu.fromJson(m)))
-    );
-
     return new Canteen(
       GeographicalLocation.fromJson(object.location),
       object.name,
-      localMenusMap,
+      new Map<string, Menu[]>(Object.entries(object.menusMap)),
     );
   }
 }

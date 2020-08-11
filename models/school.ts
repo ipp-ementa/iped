@@ -45,6 +45,19 @@ class School {
     }
   }
 
+  public updateCanteen(canteen: Canteen): Result<void, string> {
+    const canteenFiltered = this.canteens.filter((c) => c.name == canteen.name);
+
+    const hasCanteen = canteenFiltered.length < this.canteens.length;
+
+    if (hasCanteen) {
+      canteenFiltered.push(canteen);
+      return Ok(undefined);
+    } else {
+      return Err("canteen not found");
+    }
+  }
+
   public static create(
     acronym: NonEmptyString,
     canteens: Canteen[],
