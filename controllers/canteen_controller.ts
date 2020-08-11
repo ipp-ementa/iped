@@ -22,6 +22,7 @@ import {
   Canteen,
   GeographicalLocation,
   NonEmptyString,
+  School,
 } from "../models/models.ts";
 
 export async function availableCanteens(
@@ -130,7 +131,7 @@ export async function detailedCanteenInformation(
   if (canteenResult.isErr()) {
     return Err(canteenResult.unwrapErr());
   } else {
-    const canteen = canteenResult.unwrap();
+    const canteen = canteenResult.unwrap().canteen;
 
     const detailedCanteenInformationView = <DetailedCanteenInformation> {
       id: canteen.name.valueOf(),
@@ -146,7 +147,7 @@ export async function queryCanteenById(
   repository: SchoolRepository,
   schoolId: string,
   canteenId: string,
-): Promise<Result<Canteen, Error>> {
+): Promise<Result<{ school: School; canteen: Canteen }, Error>> {
   const schoolResult = await querySchoolById(repository, schoolId);
 
   if (schoolResult.isErr()) {
@@ -157,7 +158,7 @@ export async function queryCanteenById(
     const canteen = school.canteens.find((c) => c.name == canteenId);
 
     if (canteen) {
-      return Ok(canteen);
+      return Ok({ school: school, canteen: canteen });
     } else {
       return Err(new NotFound());
     }
