@@ -233,4 +233,6 @@ app.use(router.allowedMethods());
 
 console.log("reached")
 
-await app.listen(`localhost:${Deno.env.get("PORT")}`);
+console.log(Deno.env.get("PORT"))
+
+await app.listen(`:${Deno.env.get("PORT")}`);
