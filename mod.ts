@@ -1,4 +1,10 @@
-import { Application, Router, Context, MongoClient, Result } from "./deps.ts";
+import {
+  Application,
+  Router,
+  Context,
+  MongoClient,
+  Result,
+} from "./deps.ts";
 
 import {
   availableSchools,
@@ -52,7 +58,38 @@ function respondWithError(
   }
 }
 
+async function authorizationMiddleware(
+  ctx: Context,
+  next: () => Promise<void>,
+) {
+  if (ctx.request.method === "POST") {
+    const authKey = (ctx.request.headers.get("Authorization") ||
+      "Basic ").replace("Basic ", "");
+    if (await isAuthorizedForPostRequests(authKey, ipeaUrl)) {
+      await next();
+    } else {
+      console.warn(
+        "POST Request failed authorization check... Request Headers:",
+      );
+      console.warn(ctx.request.headers);
+      ctx.response.status = 401;
+    }
+  } else {
+    await next();
+  }
+}
+
+async function isAuthorizedForPostRequests(
+  authKey: string,
+  ipeaUrl: string,
+): Promise<boolean> {
+  const response = await fetch(`${ipeaUrl}/${authKey}`);
+  return response.ok;
+}
+
 const client = new MongoClient();
+
+const ipeaUrl = Deno.env.get("IPEA_URL") || "undefined";
 
 client.connectWithUri(
   Deno.env.get("MONGO_DB_CONNECTION_STRING") || "undefined",
@@ -224,6 +261,8 @@ router.get(
 );
 
 const app = new Application();
+
+app.use(authorizationMiddleware);
 
 app.use(router.routes());
 
