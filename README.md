@@ -5,23 +5,38 @@ IPED (ipp-ementa distributor) component
 
 ## Documentation
 
-IPED documentation can be found at [here](https://github.com/ipp-ementa/iped-documentation)
+IPED documentation can be found [here](https://github.com/ipp-ementa/iped-documentation)
+
+## Requirements
+
+- Deno `v1.2.2` installed (Version which the service was developed, may work with other versions)
 
 ## Dependencies
 
 |Name|Used for|
 |----|--------|
-|[gorm](https://github.com/jinzhu/gorm)|Map models into database and perform database operations|
-|[echo](https://github.com/labstack/echo)|Launch REST API on a web server as well provide middleware functions handle|
+|[monads](https://deno.land/x/monads@v0.3.4)|Functional monads to get rid of nasty exceptions and strenghen functions output|
+|[mongo](https://deno.land/x/mongo@v0.10.0/mod.ts)|ORM like for MongoDB|
+|[oak](https://deno.land/x/oak/)|Serve web api|
+|[uuid](https://deno.land/std/uuid/mod.ts)|Generate UUID v4 tokens|
 
-## Deploy
+To install the dependencies run the following command:
 
-The following environment variables are required to deploy IPED
+`deno cache --unstable deps.ts`
+
+## Run
+
+The following environment variables are required to run and deploy IPED:
 
 |Variable|Description|
 |--------|-----------|
 |PORT|The port which the web server will be available|
-|IPEW_CONNECTION_STRING|Absolute path to IPEW SQLite database file|
+|IPEA_URL|URL of IPEA service|
+|MONGO_DB_CONNECTION_STRING|Connection String of MongoDB database|
+
+Then execute the following command:
+
+`deno run --allow-net --allow-write --allow-read --allow-plugin --allow-env --unstable mod.ts --port=${PORT}`
 
 ### Changelog
 
