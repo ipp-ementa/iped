@@ -231,4 +231,6 @@ app.use(router.routes());
 
 app.use(router.allowedMethods());
 
+console.log("reached")
+
 await app.listen(`localhost:${Deno.env.get("PORT")}`);
