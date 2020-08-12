@@ -31,6 +31,7 @@ The following environment variables are required to run and deploy IPED:
 |Variable|Description|
 |--------|-----------|
 |PORT|The port which the web server will be available|
+|IPEA_URL|URL of IPEA service|
 |MONGO_DB_CONNECTION_STRING|Connection String of MongoDB database|
 
 Then execute the following command:
