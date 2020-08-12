@@ -12,6 +12,6 @@ export {
   ObjectId,
   Collection,
   QuerySelector,
-} from "https://raw.githubusercontent.com/freitzzz/deno_mongo/master/mod.ts";
+} from "https://raw.githubusercontent.com/freitzzz/deno_mongo/support-map-conversion/mod.ts";
 
 export { v4 } from "https://deno.land/std/uuid/mod.ts";
